@@ -52,6 +52,10 @@ Now someone has to take the audio off that socket and put it in a room. That is 
 
 Locally, both doors work. On AWS, only the WebSocket door is used. The hosts have private IPs, and nobody wanted to open thousands of public UDP ports.
 
+:::tip See the SIP door work
+The platform never ran the SIP door in the cloud. [Self-hosted SIP](lesson:livekit/self-hosted-sip) runs it on a laptop: a script sends a raw SIP INVITE, gets a 200 OK, streams RTP, and hears the agent's audio come back. [SIP fundamentals](lesson:livekit/sip-fundamentals) explains each message on that path.
+:::
+
 A WebSocket call goes like this:
 
 1. The carrier sends an HTTPS webhook: "a call came in on this number." The load balancer passes `/telephony/*` straight to the bridge. The API gateway is not in this path, since it can't proxy WebSockets.
@@ -98,4 +102,4 @@ The gateway can't proxy WebSockets, and carriers need a long-lived socket. The l
 Close code 1013, "try again later". The bridge is shutting down, so the caller should be served by another instance. The 503 on `/health` already steers the load balancer away.
 :::
 
-Next: [WebRTC from the wire up](lesson:voice-prod/webrtc-from-the-wire-up)
+Next: [How the platform rides LiveKit](lesson:voice-prod/how-the-platform-rides-livekit)

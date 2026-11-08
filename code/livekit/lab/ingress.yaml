@@ -1,0 +1,20 @@
+# Ingress service config. Docs: https://docs.livekit.io/transport/self-hosting/ingress.md
+api_key: lab-key
+api_secret: lab-secret-change-me-it-must-be-at-least-32-chars
+ws_url: ws://127.0.0.1:7880
+redis:
+  address: 127.0.0.1:6379
+rtmp_port: 1935
+whip_port: 8080
+http_relay_port: 9090
+health_port: 8091
+logging:
+  level: info
+rtc_config:
+  udp_port: 7885
+  use_external_ip: false
+cpu_cost:                  # how many CPU cores each job reserves; with 0 the service warns and refuses work
+  rtmp_cpu_cost: 2.0
+  whip_cpu_cost: 2.0
+  whip_bypass_transcoding_cpu_cost: 0.1
+  url_cpu_cost: 2.0

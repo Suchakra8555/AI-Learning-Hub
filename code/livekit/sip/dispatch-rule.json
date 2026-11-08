@@ -1,0 +1,7 @@
+{
+  "dispatch_rule": {
+    "name": "one room per caller, echo agent",
+    "rule": { "dispatchRuleIndividual": { "roomPrefix": "call-" } },
+    "roomConfig": { "agents": [ { "agentName": "echo", "metadata": "{\"delay_ms\": 300}" } ] }
+  }
+}

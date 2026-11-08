@@ -37,6 +37,22 @@ def min_interruption_seconds(sensitivity=0.5):
 
 Two more knobs sit beside it. A minimum word count stops a cough or "mm-hm" from cutting the agent off. A **false interruption** is a cut-in that turns out to be noise. LiveKit can wait a set silence after it and then resume "from where it left off".
 
+:::note The same knobs in livekit-agents 1.8
+The platform is on 1.6.8 and passes these as flat `AgentSession` arguments. In 1.8 they still work but are deprecated, and they move under `turn_handling=TurnHandlingOptions(...)`. This is the mapping the library itself applies (`_migrate_turn_handling` in 1.8.11):
+
+| Flat argument (1.6) | `TurnHandlingOptions` key (1.8) |
+|---|---|
+| `min_endpointing_delay`, `max_endpointing_delay` | `endpointing.min_delay`, `endpointing.max_delay` |
+| `min_interruption_duration` (the sensitivity formula's output) | `interruption.min_duration` |
+| `min_interruption_words` | `interruption.min_words` |
+| `false_interruption_timeout`, `resume_false_interruption` | `interruption.false_interruption_timeout`, `interruption.resume_false_interruption` |
+| `allow_interruptions=False` | `interruption.enabled: false` (`True` is the default and maps to nothing) |
+| `preemptive_generation=True` | `preemptive_generation: {"enabled": true}` |
+| `turn_detection` | `turn_detection` |
+
+A self-hosted agent should also pin `TurnDetector(version="v1-mini")` and `interruption={"mode": "vad"}`. The 1.8 defaults can reach for LiveKit Inference, a Cloud service. [Turns and interruptions](lesson:livekit/turns-and-interruptions) runs both on the lab.
+:::
+
 ## Reset shared state on every job
 
 The worker loads Silero and the turn model once per process in a **prewarm** step, so idle processes stay warm. A process runs one call at a time, then takes the next. The VAD object is shared across those calls.

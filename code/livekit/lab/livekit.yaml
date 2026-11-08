@@ -1,0 +1,26 @@
+# LiveKit server config for the course lab. Docs: https://docs.livekit.io/transport/self-hosting/deployment.md
+# Full list of keys: https://github.com/livekit/livekit/blob/master/config-sample.yaml
+port: 7880                 # HTTP API + WebSocket signaling (/rtc). Put TLS in front of it in production.
+bind_addresses: ["127.0.0.1"]  # shortcut: lab only listens on this machine. Production: 0.0.0.0 behind a load balancer.
+log_level: info
+rtc:
+  tcp_port: 7881           # ICE over TCP, the fallback when UDP is blocked
+  port_range_start: 50000  # ICE over UDP: 2 ports per participant
+  port_range_end: 50200    # shortcut: production default range is 50000-60000
+  use_external_ip: false   # true on a cloud VM so the server advertises its public IP (found via STUN)
+redis:
+  address: 127.0.0.1:6379  # turns on distributed mode; egress, ingress and SIP must use this same Redis
+keys:
+  lab-key: lab-secret-change-me-it-must-be-at-least-32-chars   # API key: API secret
+webhook:
+  api_key: lab-key         # must be one of the keys above; LiveKit signs each webhook with its secret
+  urls:
+    - http://127.0.0.1:8099/webhook
+prometheus:
+  port: 6789               # GET http://127.0.0.1:6789/metrics (the old flat prometheus_port key is deprecated)
+room:
+  empty_timeout: 300       # seconds an empty room lives before it closes
+  departure_timeout: 20    # seconds a room lives after the last participant leaves
+ingress:
+  rtmp_base_url: rtmp://127.0.0.1:1935/live
+  whip_base_url: http://127.0.0.1:8080/w

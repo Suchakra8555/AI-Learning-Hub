@@ -6,7 +6,7 @@ time: 18 min
 
 A phone call with an agent sounds like two parties, but it rarely stays at two. You want a recorder on every call. Someone wants to listen in live, and support may want to add a human later. Once three or four parties share a call, you have to decide where the audio goes and who pays for moving it.
 
-[The last lesson](lesson:voice-prod/webrtc-from-the-wire-up) covered one WebRTC connection. Here we connect many of them.
+[The last lesson](lesson:livekit/webrtc-from-the-wire-up) covered one WebRTC connection. Here we connect many of them.
 
 ## Three topologies
 
@@ -62,7 +62,7 @@ LiveKit's SFU page compares the three and says LiveKit is an SFU ([LiveKit SFU](
 
 ## The numbers
 
-`code/voice-prod/sfu_math.py` counts the bandwidth for each shape. Every participant publishes one audio stream at 32 kbit/s, a typical Opus voice rate.
+`code/livekit/sfu_math.py` counts the bandwidth for each shape. Every participant publishes one audio stream at 32 kbit/s, a typical Opus voice rate.
 
 ```python
 def mcu(n):    # server decodes all, mixes one stream per person, re-encodes
@@ -72,7 +72,7 @@ def sfu(n):    # server forwards packets untouched
     return dict(client_up=KBPS, client_down=(n - 1) * KBPS, server_in=n * KBPS, server_out=n * (n - 1) * KBPS, decodes=0)
 ```
 
-Real output of `python3 code/voice-prod/sfu_math.py`. The script prints "kb", but every number is kbit/s:
+Real output of `python3 code/livekit/sfu_math.py`. The script prints "kb", but every number is kbit/s:
 
 ```text
   n topology  client up  client down  server out  server decodes
@@ -140,12 +140,33 @@ Observers and recorders are cheap to add. LiveKit **egress** records a room or s
 
 With an SFU, each participant has its own WebRTC connection to the server, not to the other participants. So RTCP reports and NACKs from a subscriber go to the SFU. In general an SFU can answer a NACK from packets it has cached and use the reports to estimate each subscriber's bandwidth, rather than pushing every request back to the publisher. LiveKit's docs confirm the bandwidth estimation. We didn't check how it handles NACKs in its code.
 
-## What the platform does
+## Inside LiveKit's SFU
 
-Every call gets its own LiveKit room. On the phone door, the media bridge joins as a participant named `pstn-<call_id>`. It publishes the caller's audio at 8 kHz, and the LiveKit SDK encodes that to 48 kHz Opus. It subscribes to the agent's track. The agent worker joins as a second participant. When recording is on, an egress worker records the room to S3 or MinIO. LiveKit is self-hosted, and its docs say a self-hosted room must fit on a single node ([LiveKit SFU](https://docs.livekit.io/reference/internals/livekit-sfu/)). At two or three participants per room that limit is far away.
+**livekit-server** is written in Go on top of **Pion**, a Go implementation of WebRTC. A single node has no outside dependencies. Several nodes need **Redis**, which records which node hosts each room and passes messages between nodes, so every client in a room lands on the same node ([LiveKit SFU](https://docs.livekit.io/reference/internals/livekit-sfu/)). That is why a self-hosted room must fit on one node. At two or three participants per voice call, the limit is far away.
 
-:::warn Gotcha from the platform
-"The agent is just another participant" works both ways. LiveKit's docs say that with `agent_name` set, an agent is only assigned to rooms when it is dispatched explicitly ([agent dispatch](https://docs.livekit.io/agents/server/agent-dispatch/)). The platform's worker sets no `agent_name`, so it is dispatched automatically into every room, including any room that was never meant to be a call. Another open problem sits on the recorder side: if the assistant lookup fails, recording defaults to on, and the consent flag is never checked.
+The server also adapts what each subscriber gets. It estimates the downstream bandwidth of each subscriber and forwards the quality layer that fits, such as a lower resolution or bitrate. In SDKs with **adaptive stream**, the client can also ask for a resolution that matches its video element and pause video nobody can see (same page).
+
+**Signaling** is LiveKit's own protocol. The [client protocol page](https://docs.livekit.io/reference/internals/client-protocol/) describes it:
+
+- The client opens a WebSocket to `/rtc` with its access token, `auto_subscribe` and a `protocol` version. Messages are Protocol Buffers: the client sends `SignalRequest`, the server sends `SignalResponse`.
+- Each client has up to two PeerConnections, one for publishing and one for subscribing. The side that sends tracks always makes the offer. Separate connections avoid **glare**, where both sides send an offer at once.
+- The subscriber connection opens at join, and the server makes its offer. The publisher connection opens only when the client first publishes.
+- Server events (`ParticipantUpdate`, `SpeakersChanged`, `LeaveRequest`) can repeat, so clients must handle them idempotently.
+
+The docs say the current protocol version is 17. On the lab (livekit-server v1.13.11), the server log showed the `lk` CLI's Go SDK joining with `"protocol": 17`, and the Python agent server (livekit-agents 1.8.11) registered with `protocol: 18`. So SDKs already speak a newer version than the docs page states, and the server accepts both.
+
+:::note Self-hosted vs Cloud
+Self-hosted, each room lives on one node, up to about 3,000 users per room. LiveKit Cloud runs a global mesh of SFUs with no per-room limit, and each user connects to the nearest edge ([LiveKit Cloud](https://docs.livekit.io/intro/cloud/)). For voice agents this gap rarely matters. Add nodes with Redis for more rooms, not bigger ones.
+:::
+
+:::tip CLI
+`lk room list` shows the rooms on your server. `lk room participants list <room>` shows who is connected. `lk perf load-test` measures what one node can forward (see the scaling lesson).
+:::
+
+For how a real system lays out caller, agent and recorder in one room, see [the system map](lesson:voice-prod/the-system-map) in the Voice in production track.
+
+:::warn "Just another participant" works both ways
+The agent joins rooms like any client. LiveKit's docs say that an agent with `agent_name` set is only sent to rooms when it is dispatched explicitly. Without `agent_name`, it is dispatched automatically into every new room ([agent dispatch](https://docs.livekit.io/agents/server/agent-dispatch/)). That includes rooms that were never meant to have an agent, such as a load test or a recording-only room.
 :::
 
 :::try
@@ -153,7 +174,7 @@ Add `4` to the tuple `(2, 3, 10)` in `sfu_math.py` and predict the SFU row's cli
 :::
 
 :::note What we did not test
-We read LiveKit's SFU, subscription, egress and dispatch pages and the platform's code. We didn't measure bandwidth on a live room or load-test a node. `sfu_math.py` leaves out video, simulcast, RTCP overhead and the encoding cost on each client.
+We read LiveKit's SFU, client protocol, subscription, egress and dispatch pages. The two protocol numbers come from the lab's logs. We didn't measure bandwidth per topology on a live room here, and we didn't read the server's NACK or bandwidth-estimation code. `sfu_math.py` leaves out video, simulcast, RTCP overhead and the encoding cost on each client.
 :::
 
 :::say
@@ -168,4 +189,4 @@ Two tracks are published (caller and agent). The caller's track goes to the agen
 The MCU must decode and re-encode every stream, which costs server CPU and adds delay. It also hands out a mix, so the agent and the recorder lose the separate per-speaker tracks they want.
 :::
 
-Next: [LiveKit concepts](lesson:voice-prod/livekit-concepts)
+Next: [Run it yourself](lesson:livekit/run-it-yourself)

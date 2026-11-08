@@ -1,0 +1,8 @@
+{
+  "trunk": {
+    "name": "lab outbound (nobody answers)",
+    "address": "127.0.0.1:5099",
+    "numbers": ["+15105550100"],
+    "transport": "SIP_TRANSPORT_UDP"
+  }
+}
