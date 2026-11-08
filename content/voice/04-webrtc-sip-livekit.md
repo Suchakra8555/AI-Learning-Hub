@@ -47,4 +47,4 @@ Our [research notes on voice, LLMOps and inference](lesson:research/voice-llmops
 When two devices cannot connect directly, for example behind strict firewalls, TURN relays their traffic so the call still works.
 :::
 
-Next: [Voice in production: the system map](lesson:voice-prod/the-system-map).
+Next: [LiveKit, self-hosted: what LiveKit is](lesson:livekit/what-livekit-is)

@@ -1,0 +1,7 @@
+{
+  "input_type": "RTMP_INPUT",
+  "name": "lab camera",
+  "room_name": "ingress-test",
+  "participant_identity": "obs",
+  "participant_name": "Test pattern"
+}

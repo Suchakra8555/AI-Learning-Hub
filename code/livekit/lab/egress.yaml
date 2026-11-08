@@ -1,0 +1,9 @@
+# Egress service config. Docs: https://docs.livekit.io/transport/self-hosting/egress.md
+api_key: lab-key
+api_secret: lab-secret-change-me-it-must-be-at-least-32-chars
+ws_url: ws://127.0.0.1:7880
+insecure: true
+redis:
+  address: 127.0.0.1:6379  # same Redis as the server: that is how the server hands it work
+health_port: 8090
+# shortcut: local file output only. Production uses s3/gcp/azure blocks here.

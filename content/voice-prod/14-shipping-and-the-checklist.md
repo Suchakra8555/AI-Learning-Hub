@@ -52,10 +52,11 @@ Use this before you call a voice platform production-ready. Each item links to t
 
 ### WebRTC and LiveKit
 
-- [ ] Browser calls have a reachable TURN server when the media server has only a private IP. ([WebRTC from the wire up](lesson:voice-prod/webrtc-from-the-wire-up))
-- [ ] You can explain why an SFU, and what it costs per participant. ([mesh, MCU, SFU](lesson:voice-prod/mesh-mcu-sfu))
-- [ ] LiveKit's `webhook:` block is set in every config, local and cloud. ([LiveKit concepts](lesson:voice-prod/livekit-concepts))
-- [ ] Workers register with an agent name and are dispatched explicitly, not to every room. ([how the platform rides LiveKit](lesson:voice-prod/how-the-platform-rides-livekit))
+- [ ] Browser calls have a reachable TURN server when the media server has only a private IP. ([WebRTC from the wire up](lesson:livekit/webrtc-from-the-wire-up))
+- [ ] You can explain why an SFU, and what it costs per participant. ([mesh, MCU, SFU](lesson:livekit/mesh-mcu-sfu))
+- [ ] You read the LiveKit track before building on LiveKit. ([what LiveKit is](lesson:livekit/what-livekit-is))
+- [ ] LiveKit's `webhook:` block is set in every config, local and cloud. ([webhooks and events](lesson:livekit/webhooks-and-events))
+- [ ] Workers register with an agent name and are dispatched explicitly, not to every room. ([agent server and dispatch](lesson:livekit/agent-server-and-dispatch))
 - [ ] The agent waits for, or retries, the Call row instead of racing the webhook. ([how the platform rides LiveKit](lesson:voice-prod/how-the-platform-rides-livekit))
 
 ### Security
@@ -101,7 +102,7 @@ Use this before you call a voice platform production-ready. Each item links to t
 - [ ] A person places an inbound and an outbound call after every media deploy. ([testing what you can't call](lesson:voice-prod/testing-what-you-cant-call))
 
 :::try
-Capstone exercises. Each one combines two scripts in `code/voice-prod/`.
+Capstone exercises. Each one combines two scripts in `code/voice-prod/`, except `jitter_buffer.py`, which now lives in `code/livekit/`.
 
 1. Run `blocking_loop.py` and note how long the audio pump stalls. In `latency_report.py`, add that stall to the LLM stage on 10% of turns. Predict p50 and p95 before you run it.
 2. In `consumer_group.py`, give failed events a retry delay taken from `jittered()` in `retry_backoff.py`. How many attempts should an event get before it goes to the dead-letter queue, and how long is that in minutes?

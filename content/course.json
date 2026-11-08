@@ -106,10 +106,16 @@
       "blurb": "How an AI phone or web call works: the speech-to-text, model, text-to-speech chain, where the delay hides, turn-taking, WebRTC, SIP and LiveKit."
     },
     {
+      "id": "livekit",
+      "title": "LiveKit, self-hosted",
+      "status": "ready",
+      "blurb": "LiveKit from the wire to production, run on your own machines. WebRTC and SFUs, the lk CLI, rooms, tokens, the server API, webhooks, media and data, the Agents framework, turn-taking, tools and workflows, local models, frontends, testing, SIP telephony, recording, ingress, deployment and scaling. Twenty-eight lessons and a Docker lab where every script was run."
+    },
+    {
       "id": "voice-prod",
       "title": "Voice in production",
       "status": "ready",
-      "blurb": "A case study of a real phone-agent platform. Phone audio, WebRTC from the wire up, SFUs and LiveKit, then the engineering that keeps calls alive: auth on sockets, async hot paths, events, retries, latency, privacy, testing and shipping. Seventeen lessons, eleven runnable scripts, one checklist."
+      "blurb": "The case study that follows the LiveKit track: a real phone-agent platform and the engineering that keeps calls alive. Phone audio, carrier adapters, auth on sockets, async hot paths, events, retries, latency, privacy, testing, shipping, and a production checklist. Fourteen lessons."
     },
     {
       "id": "llmops",

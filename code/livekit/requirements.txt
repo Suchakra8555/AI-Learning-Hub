@@ -1,0 +1,6 @@
+# Versions the LiveKit track was run with (Python 3.10+).
+livekit==1.2.0
+livekit-api==1.2.2
+livekit-agents[silero,openai]==1.8.11
+pytest
+pytest-asyncio

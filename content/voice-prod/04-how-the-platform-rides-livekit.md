@@ -4,7 +4,9 @@ summary: One phone call from ring to hang-up, through a LiveKit room. Where the 
 time: 25 min
 ---
 
-You know the nouns now: rooms, participants, tracks, webhooks, jobs. A phone carrier knows none of them. It sends 8 kHz audio over a WebSocket or over SIP, and it expects the same back. Your billing, your customer's webhook and your recording all hang off a database row that LiveKit has never heard of. This lesson joins the two. It follows one call through the platform and names the piece that does each step.
+This lesson assumes you have read the LiveKit track, starting with [what LiveKit is](lesson:livekit/what-livekit-is). It does not explain the basics again. For those, see [rooms, participants, tracks](lesson:livekit/rooms-participants-tracks), [tokens and grants](lesson:livekit/tokens-and-grants), [agent server and dispatch](lesson:livekit/agent-server-and-dispatch), [webhooks and events](lesson:livekit/webhooks-and-events) and [egress recording](lesson:livekit/egress-recording).
+
+A phone carrier knows none of LiveKit's nouns. It sends 8 kHz audio over a WebSocket or over SIP, and it expects the same back. Your billing, your customer's webhook and your recording all hang off a database row that LiveKit has never heard of. This lesson joins the two. It follows one call through the platform and names the piece that does each step.
 
 ## One room per call
 
@@ -79,7 +81,7 @@ Follow the caller's voice left to right:
 1. Twilio and Vobiz send base64 µ-law, 160 bytes per 20 ms frame. Ozonetel sends raw PCM16 in 10 ms packets. All of it is 8 kHz.
 2. The bridge decodes µ-law to PCM16 with a lookup table. It does not resample. It hands 8 kHz frames to the LiveKit SDK's audio source.
 3. The SDK sends the track as Opus. Opus in WebRTC always uses a 48 kHz RTP clock ([RFC 7587](https://datatracker.ietf.org/doc/html/rfc7587)).
-4. The SFU forwards the packets to the agent. It does not decode them ([mesh, MCU, SFU](lesson:voice-prod/mesh-mcu-sfu)).
+4. The SFU forwards the packets to the agent. It does not decode them ([mesh, MCU, SFU](lesson:livekit/mesh-mcu-sfu)).
 5. The agent decodes. The platform runs Silero VAD at 16 kHz by default. The STT plugin gets the audio in whatever form it wants.
 
 The agent's reply goes right to left. TTS audio is published as the agent's track. The bridge subscribes with `rtc.AudioStream(track, sample_rate=8000)`, so the frames it reads are already 8 kHz ([AudioStream](https://docs.livekit.io/reference/python/livekit/rtc/audio_stream.html)). LiveKit hands over 10 ms frames, and a small chunker joins them into the 20 ms frames the carrier expects. The bridge forwards each frame as it arrives. The agent's own audio source already paces playout in real time, so the bridge needs no timer.
@@ -153,7 +155,7 @@ Hang-up runs the same path from the other end. When the caller hangs up, the bri
 
 ## The toy, read as a call
 
-`code/voice-prod/room_model.py` from [the last lesson](lesson:voice-prod/livekit-concepts) prints the same story in miniature:
+`code/voice-prod/room_model.py` fakes a room in about 80 lines. It has tokens that name one room, publish and subscribe, and the webhooks a call produces, but no audio. Run `python3 code/voice-prod/room_model.py` and it prints the same story in miniature:
 
 ```text
 webhook -> room_started        {'room': 'call-42'}
@@ -184,14 +186,28 @@ The agent races the call row. The worker has no `agent_name`, so LiveKit dispatc
 
 The other LiveKit lessons from real calls:
 
-- The missing webhook block. Without `webhook:` in the server config, no call row ever appeared ([last lesson](lesson:voice-prod/livekit-concepts)).
+- The missing webhook block. Without `webhook:` in the server config, no call row ever appeared ([webhooks and events](lesson:livekit/webhooks-and-events)).
 - The local egress webhook gap. The cloud config is rendered with two webhook URLs, orchestration and recording, and each handler ignores events it does not own. The local config lists only orchestration. Locally, `egress_ended` never reaches the recording service, so recording rows never finish.
 - Outbound silence. By default the agent waits for the user to speak first. Someone answering a phone waits for the caller to speak. Both sides sat in silence until the silence timeout hung up, 10 to 16 seconds in. The fix is to speak first: `session.say()` with a fixed first message, or `generate_reply()`.
 - The greeting that got cut off. Callees say "hello" as they pick up. That cut the greeting off, and the caller heard silence, then a reply to their own "hello" about 3 seconds later. The first message is now not interruptible by default. While it plays, the SDK drops caller audio. Before greeting, the agent also waits up to 1.5 s for the caller to subscribe to its track, so the first word is not clipped.
 - AMD started too early. Answering-machine detection starts a 20 s budget the moment it is armed. Outbound rooms are created while the phone rings. When AMD was armed at that point, it spent its budget on ringing and returned "uncertain" before voicemail picked up. It now starts only after the bridge's participant joins. No audio is lost, since none flows before that.
 
+:::note What the docs would have told us
+Every bug above has a docs page that covers it. The team hadn't read them.
+
+- **The agent in every room.** The docs say automatic dispatch "is not recommended for most applications". With no `agent_name`, the agent is sent to every new room, and no metadata comes with it ([agent dispatch](https://docs.livekit.io/agents/server/agent-dispatch)). See [agent server and dispatch](lesson:livekit/agent-server-and-dispatch).
+- **No call row.** On a self-hosted server, "webhooks can be enabled by setting the `webhook` section in your config", with a signing API key and a list of URLs ([webhooks](https://docs.livekit.io/intro/basics/rooms-participants-tracks/webhooks-events)). See [webhooks and events](lesson:livekit/webhooks-and-events).
+- **The recording call.** `StartRoomCompositeEgress` is deprecated. The replacement is `StartEgress` with a `TemplateSource`, which needs server v1.13.5 or later when self-hosted ([egress API](https://docs.livekit.io/reference/other/egress/api)). See [egress recording](lesson:livekit/egress-recording).
+- **Outbound silence.** For outbound calls the docs say to call `wait_for_participant` with the SIP participant's identity before starting the session ([job lifecycle](https://docs.livekit.io/agents/server/job)). Then the agent speaks first with `say()` or `generate_reply()`. See [agent server and dispatch](lesson:livekit/agent-server-and-dispatch) and [tools, tasks and workflows](lesson:livekit/tools-tasks-and-workflows).
+- **AMD armed too early.** livekit-agents has AMD built in. You open it before creating the SIP participant and pass `participant_identity`, "so AMD's timers wait for that specific participant's audio track" ([AMD](https://docs.livekit.io/telephony/features/answering-machine-detection)). That is the platform's fix, already in the SDK. See [phone features](lesson:livekit/phone-features).
+:::
+
+:::note Version gap
+The platform pins livekit-agents 1.6.8. It builds its worker with `WorkerOptions`, loads models in `prewarm_fnc`, and passes flat turn arguments. The current docs target 1.8, with `AgentServer`, `setup_fnc` and `TurnHandlingOptions`. The old names still run on 1.8 with deprecation warnings. [Cloud vs self-hosted, and upgrading](lesson:livekit/cloud-vs-self-hosted-and-upgrades) maps one to the other.
+:::
+
 :::note What we did not test
-The flow, field names and fixes here were read from the platform's code and config, plus the LiveKit docs linked above. We did not capture packets or measure sample rates. The claim that the SDK turns 8 kHz frames into 48 kHz Opus, and back, is what the platform relies on. The `AudioStream` reference shows a `sample_rate` parameter but does not spell out resampling. We also did not check how livekit-sip encodes its track, or what rate each STT plugin uses.
+The flow, field names and fixes here were read from the platform's code and config, plus the LiveKit docs linked above. We did not capture packets or measure sample rates. The claim that the SDK turns 8 kHz frames into 48 kHz Opus, and back, is what the platform relies on. The `AudioStream` reference shows a `sample_rate` parameter but does not spell out resampling. We also did not check how livekit-sip encodes its track, or what rate each STT plugin uses. `room_model.py` is a toy. It has no real JWTs, no media and no network, and its webhooks fire inline instead of being retried.
 :::
 
 :::say

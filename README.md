@@ -2,7 +2,7 @@
 
 A hands-on course for engineers and new graduates who want to build AI systems that work with real users. Every hard word is explained where it first appears, and there is a glossary.
 
-It starts with how a model works, builds **RAG** (answering from your own documents) from a 50-line script to a production service, then covers agents, LangChain, testing, deployment, voice AI (including a case study of a production phone-agent platform), fine-tuning, and model serving.
+It starts with how a model works, builds **RAG** (answering from your own documents) from a 50-line script to a production service, then covers agents, LangChain, testing, deployment, voice AI, self-hosted LiveKit (with a Docker lab), a case study of a production phone-agent platform, fine-tuning, and model serving.
 
 ## Start learning
 
@@ -32,7 +32,8 @@ No `npm install` is needed. To build static files without the server: `npm run b
 | Harness engineering | 8 | The loop, tools, permissions, logs, plugins, a tour of DeepSeek Harness, a mini harness |
 | Evals and observability | 3 | Datasets, judges, live checks, LangSmith Engine, Insights |
 | Voice AI | 4 | The STT, model, TTS chain, latency, turn-taking, WebRTC, SIP, LiveKit |
-| Voice in production | 17 | A real phone-agent platform: phone audio, WebRTC in depth, SFUs, LiveKit rooms and agents, carrier adapters, socket auth, async hot paths, event streams, retries and drain, latency percentiles, secrets and recordings, testing, shipping, and a production checklist |
+| LiveKit, self-hosted | 28 | WebRTC from the wire up, SFUs, running the server, the lk CLI, rooms, tokens, server API, webhooks, media, data, Agents (server, dispatch, turns, tools, workflows, local models), frontends, testing, SIP, egress, ingress, deployment, scaling, upgrades |
+| Voice in production | 14 | A real phone-agent platform: phone audio, carrier adapters, socket auth, async hot paths, event streams, retries and drain, latency percentiles, secrets and recordings, testing, shipping, and a production checklist |
 | LLMOps and fine-tuning | 5 | Prompt vs RAG vs fine-tune, training data, SFT, LoRA, DPO, MLflow, scoring, monitoring |
 | Inference and edge | 4 | Prefill, decode, KV cache, vLLM, SGLang, TensorRT-LLM, Dynamo, GGUF, benchmarks |
 | Deploy and monitor | 4 | Tracing, dashboards, alerts, hosting options, LLM gateway, the docs watcher |
@@ -53,12 +54,13 @@ Code follows the [ponytail](https://github.com/DietrichGebert/ponytail) habit: t
 | `code/agents/graph_demo.py` | LangGraph with a human pause, no model | Run with `langgraph` 1.2.19 |
 | `code/evals/mini_eval.py` | Dataset, target, evaluator, experiment in 40 lines | Run |
 | `code/voice/latency_timer.py` | Per-stage timing with simulated stages | Run |
-| `code/voice-prod/` | µ-law codec, SDP reader, jitter buffer, SFU math, toy LiveKit room, one-time tickets, blocking event loop, barge-in, consumer groups, retries and drain, latency percentiles | Run, standard library only |
+| `code/livekit/` | A Docker lab (`lab/`: Redis, livekit-server, egress, ingress, SIP) and scripts for the CLI, tokens, the server API, webhooks, audio, data and RPC, an echo agent with dispatch, turn settings, agent tests with a scripted LLM, a raw SIP call, recording, ingress and load tests | Run against the lab (needs Docker, `lk`, and `pip install -r code/livekit/requirements.txt`); `local_stack_agent.py` built but not run |
+| `code/voice-prod/` | µ-law codec, toy room, one-time tickets, blocking event loop, barge-in, consumer groups, retries and drain, latency percentiles | Run, standard library only |
 | `code/llmops/` | Dataset split and LoRA parameter math | Run |
 | `code/inference/kv_cache.py` | KV cache size formula | Run |
 | `tools/docs_watcher.py` | Checks upstream LangChain pages our lessons cite and writes a diff report | Run, 37 pages |
 
-**Not tested, and the lessons say so:** any live model API call, the `sentence-transformers` snippet in the RAG track, LangChain and LangSmith examples (they need keys and accounts), late chunking, RAGFlow itself (read from its code, not run), LiveKit, SIP, a real carrier call (the Voice in production track is read from a real platform's code and its incident notes; its scripts simulate the mechanics), vLLM, SGLang, TensorRT-LLM, Dynamo, llama.cpp, MLflow, and DeepSeek Harness itself. Those lessons are explained from official docs with links.
+**Not tested, and the lessons say so:** any live model API call, the `sentence-transformers` snippet in the RAG track, LangChain and LangSmith examples (they need keys and accounts), late chunking, RAGFlow itself (read from its code, not run), a real carrier call over the PSTN (the LiveKit lab places SIP calls with a raw INVITE, not through a provider), LiveKit agents with paid model APIs, Kubernetes and VM deployments, multi-region LiveKit, the Voice in production platform itself (read from its code and incident notes; its scripts simulate the mechanics), vLLM, SGLang, TensorRT-LLM, Dynamo, llama.cpp, MLflow, and DeepSeek Harness itself. Those lessons are explained from official docs with links.
 
 RAG numbers come from `stage3_eval.py`, `stage5_advanced.py` and the four scripts above, on four short files and 20 questions. A one-question change is noise.
 

@@ -4,7 +4,7 @@ summary: What actually happens between "join call" and hearing a voice. Signalin
 time: 25 min
 ---
 
-If you read [WebRTC, phone lines, and LiveKit](lesson:voice/webrtc-sip-livekit), this goes deeper.
+[Lesson 1](lesson:livekit/what-livekit-is) drew the map of a LiveKit deployment. Every arrow on it that carries audio is a WebRTC connection, so before we look at rooms and tokens, we need to know what one of those connections does.
 
 A user clicks "talk to the agent". Two seconds later they hear it. In between, two programs that have never met found a network path through two routers, agreed on a codec, set up encryption, and began trading 50 small packets a second each way. When any of those steps fails, the user hears nothing and your logs say little. This lesson walks the steps in order so you know where to look.
 
@@ -61,7 +61,7 @@ For a file download, waiting is right. For a voice, it is wrong. Each packet hol
 
 ## The SDP offer, line by line
 
-**SDP** (Session Description Protocol) is a text format that describes a media session: codecs, encryption, addresses. One side sends an **offer**, the other replies with an **answer** that picks from it. `code/voice-prod/sdp_peek.py` holds a trimmed audio-only offer of the kind a browser makes, using documentation IP ranges. The important lines:
+**SDP** (Session Description Protocol) is a text format that describes a media session: codecs, encryption, addresses. One side sends an **offer**, the other replies with an **answer** that picks from it. `code/livekit/sdp_peek.py` holds a trimmed audio-only offer of the kind a browser makes, using documentation IP ranges. The important lines:
 
 ```text
 a=group:BUNDLE 0                      all media shares one transport (RFC 8843)
@@ -91,7 +91,7 @@ elif value.startswith("candidate:"):
     cands.append((f[7], f[4], f[5], int(f[3])))  # type, ip, port, priority
 ```
 
-Real output of `python3 code/voice-prod/sdp_peek.py` (the script cuts the fingerprint short on purpose):
+Real output of `python3 code/livekit/sdp_peek.py` (the script cuts the fingerprint short on purpose):
 
 ```text
 media          audio
@@ -192,7 +192,7 @@ Once ICE has a path, the peers run a **DTLS** handshake over it. DTLS is TLS ada
 
 ## The jitter buffer
 
-Packets leave every 20 ms but arrive unevenly. That variation is **jitter**. The receiver holds audio in a **jitter buffer** for a few ms before playing it. Make it too small and late packets miss their slot. Make it too big and every word arrives later. `code/voice-prod/jitter_buffer.py` sends 500 packets through a network with a 40 ms base delay, a random tail and 2% loss:
+Packets leave every 20 ms but arrive unevenly. That variation is **jitter**. The receiver holds audio in a **jitter buffer** for a few ms before playing it. Make it too small and late packets miss their slot. Make it too big and every word arrives later. `code/livekit/jitter_buffer.py` sends 500 packets through a network with a 40 ms base delay, a random tail and 2% loss:
 
 ```python
 delay = 40 + rnd.expovariate(1 / 15)        # 40 ms base + a long tail
@@ -224,20 +224,26 @@ In `network()`, change the loss from `0.02` to `0.05` and predict the 100 ms row
 
 **Data channels** send arbitrary messages over the same connection, using **SCTP** (a message-based transport) inside DTLS ([RFC 8831](https://datatracker.ietf.org/doc/html/rfc8831)). Each channel can be reliable or not, and ordered or not. LiveKit lists data messaging (text, files, RPC) among its WebRTC transport features ([LiveKit docs index](https://docs.livekit.io/llms.txt)). We did not check which of those ride on SCTP.
 
-## How this maps onto our platform
+## Where this shows up in LiveKit
 
-In the platform, the browser-to-LiveKit and agent-to-LiveKit legs are WebRTC. The agent worker and the media bridge both join rooms through the LiveKit SDK, so each runs ICE, DTLS and SRTP like a browser does. The phone leg is not WebRTC. It is SIP plus RTP into livekit-sip, or a carrier WebSocket carrying µ-law that the media bridge turns into a room participant ([lesson 3](lesson:voice-prod/two-doors-sip-and-websocket)).
+Every participant's link to a LiveKit server is one of these connections. A browser, a Python agent and a CLI bot all run ICE, DTLS and SRTP the same way. The LiveKit server plays the other peer. A phone call is different: it reaches LiveKit as SIP plus RTP through the separate SIP service, which then joins the room as a participant (the telephony lessons cover it). For these legs in a real system, see [the system map](lesson:voice-prod/the-system-map) in the Voice in production track. [WebRTC for the Curious](https://webrtcforthecurious.com/) is a free book that goes through every layer in more depth.
 
-The LiveKit server is configured with an RTC UDP port range of 50000 to 50100 and a TCP fallback port, 7881. LiveKit's docs say it advertises the UDP range as host candidates, that each participant in a room uses two ports, and that 7881 is used when a client can't connect over UDP, for example behind a VPN or a corporate firewall ([LiveKit: ports and firewall](https://docs.livekit.io/transport/self-hosting/ports-firewall/)). If the firewall blocks the range, ICE has no UDP pair to choose. Calls then fall back to TCP, with the head-of-line blocking from the top of this page, or fail. Our own estimate from the two-ports rule: 101 ports cover roughly 50 participants per node.
+On the server side, the ports decide whether ICE finds a UDP pair. LiveKit advertises its UDP range (default 50000 to 60000) as host candidates, and each participant in a room uses two ports. TCP port 7881 is the fallback when a client can't connect over UDP, for example behind a VPN or a corporate firewall ([LiveKit: ports and firewall](https://docs.livekit.io/transport/self-hosting/ports-firewall/)). If the firewall blocks the range, calls fall back to TCP, with the head-of-line blocking from the top of this page, or fail. Rough sizing from the two-ports rule: a range of 101 ports covers about 50 participants on a node. [Run it yourself](lesson:livekit/run-it-yourself) goes through every port.
 
-For more, [WebRTC for the Curious](https://webrtcforthecurious.com/) is a free book that goes through every layer in more depth.
+:::note Self-hosted vs Cloud
+LiveKit tries ICE over UDP first, then TURN over UDP, then ICE over TCP, then TURN over TLS. LiveKit Cloud runs the TURN/TLS servers for you. Self-hosted, ICE over UDP and TCP work out of the box, but TURN needs extra config and your own SSL certificate ([connecting to LiveKit](https://docs.livekit.io/intro/basics/connect/#connection-reliability)).
+:::
 
-:::warn Gotcha from the platform
-The SIP door needs public UDP for RTP. The AWS instances have no public IP, so the SIP path isn't used there at all. Phone audio comes in over a WebSocket through the load balancer instead, and the bridge joins LiveKit from inside the network. If you open a WebRTC or SIP port range in a dev compose file, check it is reachable in the real network too. On a laptop, host candidates make it work, which proves nothing about production.
+:::tip CLI
+None of this needs a command, but `lk room join --publish-demo <room>` opens a real WebRTC connection from your terminal. On the lab, the server log then shows a `starting RTC session` line for that participant.
+:::
+
+:::warn A port range that works on a laptop proves nothing
+On your own machine, host candidates connect straight away, so any port range seems fine. A production voice platform (see the Voice in production track) found that its servers had no public IP, so SIP's RTP could not reach them at all and phone audio had to come in another way. Before you trust a WebRTC or SIP port range, test it from outside the network.
 :::
 
 :::note What we did not test
-The SDP is a hand-trimmed sample, not a capture from a live browser. The jitter buffer is a fixed-depth model. We didn't capture packets from the platform or measure its jitter. LiveKit port behavior comes from its docs and the platform's config, not from a firewall test.
+The SDP is a hand-trimmed sample, not a capture from a live browser. The jitter buffer is a fixed-depth model. We didn't capture packets from a live LiveKit call or measure its jitter. LiveKit's port behavior comes from its docs, not from a firewall test.
 :::
 
 :::say
@@ -252,4 +258,4 @@ A 20 ms frame that arrives after its play time is useless, and while TCP waits f
 At least one NAT is symmetric (address-dependent mapping). It gives a different public port for each destination, so the port STUN reported doesn't work for the other peer and only the relay path gets through.
 :::
 
-Next: [Mesh, MCU and SFU](lesson:voice-prod/mesh-mcu-sfu)
+Next: [Mesh, MCU and SFU](lesson:livekit/mesh-mcu-sfu)

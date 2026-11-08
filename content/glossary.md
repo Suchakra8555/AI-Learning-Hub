@@ -124,12 +124,12 @@ summary: Every hard word in the course, said simply. If a word is missing, add i
 **RTCP**: RTP's control channel. It carries loss and jitter reports and feedback such as NACKs.
 **NACK**: A receiver's message naming a packet it did not get, asking for a resend.
 **Opus**: The audio codec WebRTC uses by default. It runs at 48 kHz and can hide some packet loss with in-band FEC.
-**Jitter buffer**: A short hold on received audio that absorbs uneven arrival times, at the cost of added delay. See [WebRTC from the wire up](lesson:voice-prod/webrtc-from-the-wire-up).
+**Jitter buffer**: A short hold on received audio that absorbs uneven arrival times, at the cost of added delay. See [WebRTC from the wire up](lesson:livekit/webrtc-from-the-wire-up).
 **PLC (packet loss concealment)**: The decoder makes up plausible audio for a missing frame.
-**SFU (selective forwarding unit)**: A server that forwards encoded media packets to subscribers without decoding them. See [mesh, MCU, SFU](lesson:voice-prod/mesh-mcu-sfu).
+**SFU (selective forwarding unit)**: A server that forwards encoded media packets to subscribers without decoding them. See [mesh, MCU, SFU](lesson:livekit/mesh-mcu-sfu).
 **MCU (multipoint control unit)**: A server that decodes, mixes and re-encodes all streams into one stream per participant.
 **Simulcast**: A publisher sends several quality layers so the SFU can forward the one each subscriber can handle.
-**Room (LiveKit)**: A session that participants join. Usually one room per call. See [LiveKit concepts](lesson:voice-prod/livekit-concepts).
+**Room (LiveKit)**: A session that participants join. Usually one room per call. See [rooms, participants and tracks](lesson:livekit/rooms-participants-tracks).
 **Participant**: Anyone or anything in a room: a browser, a phone leg, an agent, a recorder.
 **Track**: One stream of audio or video that a participant publishes and others subscribe to.
 **Egress**: LiveKit's service for recording or exporting a room or individual tracks.
@@ -166,3 +166,62 @@ summary: Every hard word in the course, said simply. If a word is missing, add i
 **Auto-subscribe**: LiveKit's default of sending every existing and future track in a room to each participant.
 **Dispatch rule**: A LiveKit SIP setting that decides which room an inbound phone caller joins.
 **Idle process**: An agent worker process started ahead of time and kept ready, with models already loaded, for the next call.
+**livekit-server**: LiveKit's open-source SFU, written in Go on the Pion WebRTC library. See [what LiveKit is](lesson:livekit/what-livekit-is).
+**lk**: LiveKit's command-line tool for tokens, rooms, dispatch, egress, ingress, SIP and load tests. Works against self-hosted servers. See [the lk CLI](lesson:livekit/the-lk-cli).
+**Distributed mode**: What livekit-server switches to when `redis.address` is set. Rooms and messages go through Redis, so several nodes plus egress, ingress and SIP can work together. See [scaling](lesson:livekit/scaling-and-load).
+**Host networking**: Running a Docker container directly on the host's network. LiveKit recommends it because WebRTC needs real UDP ports and IPs.
+**Glare**: Both sides of a WebRTC connection sending an offer at once. LiveKit avoids it with separate publisher and subscriber connections.
+**Twirp**: The RPC style behind LiveKit's server API: an HTTP POST to `/twirp/<Service>/<Method>` with a JSON body and a Bearer token. See [the server API](lesson:livekit/the-server-api).
+**Video grant**: The `video` claim in a LiveKit token. It names the room and what the holder may do there. See [tokens and grants](lesson:livekit/tokens-and-grants).
+**Track publication**: The server's record that a track exists. Everyone sees it; only subscribers get the media.
+**Participant kind**: What sort of participant it is: STANDARD, AGENT, SIP, CONNECTOR, EGRESS or INGRESS.
+**Hidden participant**: A participant others in the room cannot see, such as a recorder.
+**Selective subscription**: Turning off auto-subscribe and choosing which tracks to receive.
+**Webhook (LiveKit)**: A signed HTTP POST the LiveKit server sends your backend when something happens in a room. Delivery is retried, so handlers must be idempotent. See [webhooks and events](lesson:livekit/webhooks-and-events).
+**Dynacast**: The SFU tells a publisher to pause video layers nobody is watching.
+**Adaptive stream**: The client asks for the video layer that fits the element showing it, and pauses hidden ones.
+**SVC (scalable video coding)**: One video stream that holds several resolution and frame-rate layers. VP9 and AV1 use it.
+**RED (redundant audio)**: Sending each audio frame again in later packets, so a lost packet can be rebuilt.
+**DTX (discontinuous transmission)**: Opus sends almost nothing during silence, which saves bandwidth.
+**E2EE (end-to-end encryption)**: Media encryption the server cannot read. In LiveKit you create and share the keys yourself. See [media in depth](lesson:livekit/media-in-depth).
+**Text stream**: A reliable stream of text on a named topic, sent to participants who are connected now. Agents send transcripts on `lk.transcription`. See [data and state](lesson:livekit/data-and-state).
+**Byte stream**: Like a text stream, but for files and binary data.
+**RPC (LiveKit)**: Calling a named method on another participant and waiting for the reply. Payloads up to 15 KiB, default timeout 10 s.
+**Data packet**: One low-level message, reliable (up to 15 KiB) or lossy (about 1300 bytes).
+**Data track**: A published track of lossy, in-order data frames for continuous data such as sensor readings.
+**Participant attributes**: A small key-value map on each participant (64 KiB total) that LiveKit syncs to everyone. Setting your own needs the `can_update_own_metadata` grant.
+**Agent server**: The long-running process that registers with LiveKit and runs each agent job in its own child process. Older code and logs call it a worker. See [agent server and dispatch](lesson:livekit/agent-server-and-dispatch).
+**Job metadata**: A string, up to 512 KiB, attached to a dispatch and read by the agent as `ctx.job.metadata`.
+**AgentSession**: The object inside a job that runs the voice pipeline, calls the LLM and emits state and error events. See [the agents mental model](lesson:livekit/agents-mental-model).
+**RoomIO**: The part of an agent session that subscribes to the user's audio and publishes the agent's audio and transcripts.
+**Turn detector**: A model on top of VAD that guesses whether the user has finished their turn. `v1-mini` runs on local CPU; `v1` runs on LiveKit Cloud. See [turns and interruptions](lesson:livekit/turns-and-interruptions).
+**False interruption**: A sound that paused the agent but held no words. The agent resumes after a timeout.
+**Backchannel**: Short listener sounds such as "uh-huh" that mean "go on", not "stop".
+**Function tool**: A Python function the LLM can call during a turn, declared with `@function_tool`. See [tools, tasks and workflows](lesson:livekit/tools-tasks-and-workflows).
+**Handoff**: Passing the session to another Agent by returning it from a tool. The new agent starts with empty context unless you pass `chat_ctx`.
+**AgentTask**: A short sub-conversation that takes control until it calls `complete()` with a typed result.
+**Pipeline node**: An overridable Agent method (stt_node, llm_node, tts_node, transcription_node) that one stage of a turn streams through. See [nodes, hooks, RAG and fallbacks](lesson:livekit/nodes-hooks-rag-fallbacks).
+**FallbackAdapter**: A wrapper over several STT, LLM or TTS providers that switches to the next when one fails. Works self-hosted.
+**LiveKit Inference**: LiveKit Cloud's model gateway, used through `inference.*` classes. Not available on a self-hosted server. See [models without the Cloud](lesson:livekit/models-without-the-cloud).
+**StreamAdapter**: Wraps a non-streaming STT such as Whisper and uses VAD to cut audio into clips.
+**MCP (Model Context Protocol)**: A standard way to expose tools from a separate server. LiveKit agents mount one with `MCPToolset`.
+**Token endpoint**: Your backend route that returns `server_url` and `participant_token` to a frontend, so the API secret never leaves the server. See [frontends and sessions](lesson:livekit/frontends-and-sessions).
+**Scripted LLM**: A fake model that follows fixed rules, so agent tests run offline, free and the same every time. See [testing and observability](lesson:livekit/testing-and-observability).
+**PSTN**: The public switched telephone network: the ordinary phone network.
+**SIP trunk**: A SIP account at a phone provider that links phone numbers to your server. See [self-hosted SIP](lesson:livekit/self-hosted-sip).
+**Dispatch rule types**: How LiveKit SIP picks a room for an inbound call: individual (one room per caller), direct (a fixed room, optional PIN) or callee (named after the called number).
+**Early media**: Audio before a call is answered, started by a 183 Session Progress response.
+**DTMF**: Keypad tones. On SIP calls they travel as RTP telephone-event packets. See [phone features](lesson:livekit/phone-features).
+**IVR**: Interactive voice response, a "press 1 for billing" phone menu.
+**SIP REFER**: A SIP request asking the other side to connect the call elsewhere. LiveKit uses it for cold transfers.
+**Cold transfer**: Handing a caller to another number without briefing anyone first.
+**Warm transfer**: Briefing a human first, then connecting them to the caller.
+**SRTP**: Encrypted RTP. On SIP trunks it pairs with TLS signaling on port 5061.
+**Media timeout**: LiveKit ends a SIP call if no RTP arrives for 30 s at the start or 15 s after the last packet.
+**G.722**: A wideband phone codec carrying 16 kHz audio (HD voice), though its SDP line says 8000.
+**Stream key**: The secret part of an RTMP URL that tells ingress which ingress and room a stream belongs to. See [ingress](lesson:livekit/ingress).
+**WHIP**: WebRTC-HTTP ingestion protocol, a simple HTTP handshake that starts a WebRTC publish.
+**Auto egress**: Recording set on the room itself (in CreateRoom or a token's room config), so it starts with the room. See [egress and recording](lesson:livekit/egress-recording).
+**TURN/TLS**: A media relay reached over TLS on port 443, so it looks like HTTPS and passes strict firewalls. See [production deployment](lesson:livekit/production-deployment).
+**Node selector**: The livekit-server setting that picks which node hosts a new room, for example region-aware with a `sysload_limit`.
+**Playout delay**: How long a subscriber buffers video before showing it. Lower means fresher but choppier.

@@ -1,0 +1,8 @@
+{
+  "trunk": {
+    "name": "lab inbound",
+    "numbers": ["+15105550100"],
+    "allowed_addresses": ["127.0.0.1/32"],
+    "krisp_enabled": false
+  }
+}

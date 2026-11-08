@@ -90,6 +90,10 @@ livekit-agents also emits VAD metrics. On the platform they fired about once a s
 
 The events give you numbers per turn but no picture. **Tracing** records one request as a tree of timed **spans**, one per stage ([OpenTelemetry: traces](https://opentelemetry.io/docs/concepts/signals/traces/)). For voice, one trace per turn with a span for each box in the figure would let you open a single slow turn and see exactly which stage stalled, with the call id, provider, and model attached. [Tracing, dashboards, and alerts](lesson:deploy/tracing-and-dashboards) shows the setup for LLM apps. The platform has neither tracing nor dashboards. Its logs are structured JSON and its metrics are stream events read by a script.
 
+:::tip Built into livekit-agents
+Both pieces now ship with the SDK. `set_tracer_provider` exports the agent's spans to any OpenTelemetry backend ([OpenTelemetry traces](https://docs.livekit.io/testing/observability/tracing)). Each reply's `ChatMessage.metrics` carries its per-turn latency, and 1.8 deprecates the session-level `metrics_collected` event in its favor ([data hooks](https://docs.livekit.io/testing/observability/data)). [Testing and observability](lesson:livekit/testing-and-observability) sets both up on a self-hosted lab.
+:::
+
 :::warn Gotcha from the platform
 Cost tracking was written and never switched on. The code that turns usage into money has 36 tests, and the pricing route has 6 more. No call path ever calls it. Its rate cards are marked "illustrative" and unverified. So the platform can tell you a turn took 3 s, but it cannot tell you what the call cost.
 :::

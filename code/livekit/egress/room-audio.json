@@ -1,0 +1,5 @@
+{
+  "room_name": "record-me",
+  "template": { "audio_only": true },
+  "outputs": [ { "file": { "filepath": "/out/{room_name}-{time}.ogg" } } ]
+}

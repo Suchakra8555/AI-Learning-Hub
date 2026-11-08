@@ -20,6 +20,10 @@ A **test pyramid** is the idea that you want many cheap, fast tests at the botto
 
 The rest of this lesson walks up the pyramid.
 
+:::tip LiveKit has a test layer for agents
+livekit-agents ships a pytest framework: `session.run` drives one turn in text, `expect` asserts what the agent said and which tools it called, and `mock_tools` swaps tool bodies for fakes. Console mode lets you talk to the agent in a terminal with no room ([unit tests](https://docs.livekit.io/testing/unit-tests)). [Testing and observability](lesson:livekit/testing-and-observability) runs these tests offline with a scripted fake LLM, so no key and no server are needed.
+:::
+
 ## Pure modules first
 
 A **pure function** returns the same output for the same input and touches nothing outside itself: no clock, no network, no globals. It is the cheapest thing to test. That is why the platform pulled turn-taking out into a module of pure functions (see [tuning turns as pure functions](lesson:voice-prod/tuning-turns-as-pure-functions)) and why the latency timer takes its clock as an argument.
