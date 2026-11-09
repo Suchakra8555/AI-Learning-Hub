@@ -196,5 +196,3 @@ The session was linked to the caller, the first participant to join. When the ca
 :::check Your TTS provider returns a 500 once. Does the call end?
 Usually not. The session retries, and the `error` event arrives with `recoverable=True`. Only when retries run out does `recoverable` become `False`. Then the session closes with reason `error` unless your handler marks it recoverable.
 :::
-
-Next: [Agent server and dispatch](lesson:livekit/agent-server-and-dispatch)

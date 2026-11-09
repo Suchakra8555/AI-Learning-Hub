@@ -221,5 +221,3 @@ On outbound calls the room and the agent exist while the phone is still ringing.
 :::check The bridge publishes 8 kHz audio. Who turns it into 48 kHz, and does the SFU ever decode it?
 The LiveKit SDK inside the bridge encodes it to Opus, whose RTP clock is 48 kHz. The SFU only forwards packets. The agent's SDK decodes them.
 :::
-
-Next: [One interface, many carriers](lesson:voice-prod/one-interface-many-carriers)

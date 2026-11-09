@@ -119,5 +119,3 @@ The pump had already started a 20 ms sleep. The block took 50 ms of the loop's t
 :::check In the try exercise, why did the late-frame count stay at 10 when the block grew to 200 ms?
 There are still only 10 publishes, and each one causes one long gap. A longer block makes each gap longer. It doesn't add publishes.
 :::
-
-Next: [Tuning turns as pure functions](lesson:voice-prod/tuning-turns-as-pure-functions)

@@ -90,5 +90,3 @@ A test set of real questions with known right chunks and answers, and a script t
 :::
 
 Want the full list of files we read? See the [RAGFlow research note](lesson:research/ragflow).
-
-Next: take what you learned into the [Agents track](lesson:agents/what-is-an-agent).

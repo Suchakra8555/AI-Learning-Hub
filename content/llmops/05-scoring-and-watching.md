@@ -45,5 +45,3 @@ The Node Exporter guide is for a Linux host. We did not confirm Windows support,
 :::check Prometheus shows the server is healthy, but users report bad answers. Which tools tell you why?
 Traces and answer scores. Machine metrics show the servers are running, not whether the answers are right.
 :::
-
-Next: the [Inference track](lesson:inference/what-happens-when-you-press-enter) covers what the machines are doing.

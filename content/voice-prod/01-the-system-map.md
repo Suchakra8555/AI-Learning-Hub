@@ -128,5 +128,3 @@ So call orchestration never waits on it. If the recording service is slow or dow
 :::check Why can't a customer call an `/internal/*` route through the gateway?
 The gateway returns 404 for any path with an `internal` segment, and it strips the internal-key header from every outside request.
 :::
-
-Next: [Phone audio is different](lesson:voice-prod/phone-audio-is-different)

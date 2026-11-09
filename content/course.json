@@ -1,7 +1,7 @@
 {
   "siteName": "AI Engineering, in plain words",
   "headline": "Learn to build AI systems that still work when real people use them.",
-  "tagline": "A hands-on course for engineers and new graduates. Start with how a model works, build RAG from a 50-line script to a service, then learn agents, LangChain, evals, deployment, voice, fine-tuning and model serving. Every hard word is explained.",
+  "tagline": "A hands-on course for engineers and new graduates. Start with how a model works, then prompt engineering, build RAG from a 50-line script to a service, then learn agents, LangChain, evals, deployment, voice, fine-tuning and model serving. Every hard word is explained.",
   "repoUrlBase": "",
   "howTo": [
     {
@@ -70,6 +70,12 @@
       "blurb": "What a language model does, what tokens and context windows are, your first API call, writing prompts, and getting JSON back. Five short lessons."
     },
     {
+      "id": "prompting",
+      "title": "Prompt engineering",
+      "status": "ready",
+      "blurb": "How to ask a model so it answers well. Zero-, one- and few-shot examples, chain of thought, roles and context, ReAct, retrieval-augmented prompting, self-consistency, tree of thought, and guardrails. Nine lessons."
+    },
+    {
       "id": "rag",
       "title": "RAG: from POC to production",
       "status": "ready",
@@ -98,6 +104,12 @@
       "title": "Evals and observability",
       "status": "ready",
       "blurb": "Datasets, experiments, judges, live checks, refining prompts, and tools like LangSmith Engine that find problems for you."
+    },
+    {
+      "id": "deploy",
+      "title": "Deploy and monitor",
+      "status": "ready",
+      "blurb": "Tracing, dashboards, alerts, where to host an agent, the LLM gateway, and a script that watches upstream docs for changes."
     },
     {
       "id": "voice",
@@ -134,12 +146,6 @@
       "title": "Dig deeper: research notes",
       "status": "ready",
       "blurb": "The source notes behind the lessons: what each outside resource teaches, how to read it, and what we could not verify. Start here if you want to go further."
-    },
-    {
-      "id": "deploy",
-      "title": "Deploy and monitor",
-      "status": "ready",
-      "blurb": "Tracing, dashboards, alerts, where to host an agent, the LLM gateway, and a script that watches upstream docs for changes."
     }
   ]
 }

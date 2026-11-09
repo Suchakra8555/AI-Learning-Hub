@@ -51,5 +51,3 @@ Make the LLM sleep 1.5 seconds. Which row changes? Now keep the LLM fast but mak
 :::check Why report the worst case and not only the median?
 Callers notice the slow turns. A good median can hide a bad experience on one call in ten.
 :::
-
-Next: [knowing when to speak](lesson:voice/knowing-when-to-speak).

@@ -218,5 +218,3 @@ The agent server registers out to LiveKit and waits. A dispatch with its agent n
 :::check A user rejoins an existing room with a fresh token that names the agent, but the agent doesn't come back. Why?
 Token dispatch applies only when that join creates the room. The room still existed, so the token's dispatch was ignored. Create an explicit dispatch with the API instead.
 :::
-
-Next: [Turns and interruptions](lesson:livekit/turns-and-interruptions)

@@ -90,5 +90,3 @@ The answer stuck to the chunks, but the chunks were wrong or out of date. Look a
 :::check Context precision is low on most questions. What change does that suggest?
 Send fewer chunks, or add a reranker so the few you send are the useful ones. You are paying for tokens the answer never uses.
 :::
-
-Next: [agentic RAG](lesson:rag/agentic-rag).

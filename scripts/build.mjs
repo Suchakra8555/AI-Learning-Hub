@@ -306,6 +306,33 @@ lessons.forEach((lesson, idx) => {
   const trackObj = course.tracks.find((t) => t.id === lesson.track);
   const posInTrack = trackObj.lessons.indexOf(lesson) + 1;
 
+  const tail = lesson.body.split('\n').slice(-15);
+  if (tail.some((l) => l.startsWith('Next:') && l.includes('lesson:'))) {
+    warn(`${lesson.file}: hand-typed "Next:" line; the build adds the Up next card from folder order, so remove it`);
+  }
+
+  const nextTrackObj = next ? course.tracks.find((t) => t.id === next.track) : null;
+  const crossNext = !!next && next.track !== lesson.track;
+  const crossPrev = !!prev && prev.track !== lesson.track;
+  let upNext;
+  if (next) {
+    const label = crossNext
+      ? `You finished <em>${esc(trackObj.title)}</em>. Next track: <em>${esc(nextTrackObj.title)}</em>`
+      : `Up next &middot; Lesson ${posInTrack + 1} of ${trackObj.lessons.length}`;
+    upNext = `<aside class="up-next${crossNext ? ' is-track' : ''}" aria-label="Up next">
+    <p class="up-next-label">${label}</p>
+    <a class="up-next-title" href="${prefix}${next.path}.html">${esc(next.title)}</a>
+    ${next.summary ? `<p class="up-next-summary">${esc(next.summary)}</p>` : ''}
+    ${next.time ? `<p class="up-next-time">${esc(next.time)}</p>` : ''}
+  </aside>`;
+  } else {
+    upNext = `<aside class="up-next is-track" aria-label="Course finished">
+    <p class="up-next-label">You finished the course</p>
+    <p class="up-next-summary">That was the last lesson. Pick any track again from the course map, or look up a word in the glossary.</p>
+    <p class="up-next-links"><a href="${prefix}index.html#tracks">Course map</a> <a href="${prefix}glossary.html">Glossary</a></p>
+  </aside>`;
+  }
+
   const toc = ctx.toc.length
     ? `<nav class="toc" aria-label="On this page"><p class="toc-title">On this page</p><ul>${ctx.toc
         .map((t) => `<li class="l${t.level}"><a href="#${t.id}">${esc(t.text)}</a></li>`)
@@ -323,9 +350,10 @@ lessons.forEach((lesson, idx) => {
   <div class="finish">
     <button type="button" class="mark-done" data-done="${lesson.path}"><span class="mark-off">Mark this lesson done</span><span class="mark-on">Done. Click to undo</span></button>
   </div>
+  ${upNext}
   <nav class="pager" aria-label="Lesson navigation">
-    ${prev ? `<a class="prev" href="${prefix}${prev.path}.html"><span>Previous</span>${esc(prev.title)}</a>` : '<span></span>'}
-    ${next ? `<a class="next" href="${prefix}${next.path}.html"><span>Next</span>${esc(next.title)}</a>` : '<span></span>'}
+    ${prev ? `<a class="prev" href="${prefix}${prev.path}.html"><span>${crossPrev ? 'Previous track' : 'Previous'}</span>${esc(prev.title)}</a>` : '<span></span>'}
+    ${next ? `<a class="next" href="${prefix}${next.path}.html"><span>${crossNext ? 'Next track' : 'Next'}</span>${esc(next.title)}</a>` : '<span></span>'}
   </nav>
 </article>`;
 

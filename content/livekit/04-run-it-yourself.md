@@ -201,5 +201,3 @@ The UDP media range (50000–60000 by default). Signaling on TCP 7880 got throug
 :::check Why does setting `redis.address` matter even on a single machine?
 It switches the server into distributed mode. Egress, ingress and SIP find the server and get their jobs through that same Redis, so without it they can't work with it.
 :::
-
-Next: [The lk CLI](lesson:livekit/the-lk-cli)

@@ -84,5 +84,3 @@ Naming the field after the vector length (`vec_768`, `vec_1024`) makes step 1 na
 :::check Binary vectors are 32 times smaller but less accurate. How do teams get most of both?
 Search the binary vectors for a wide list of candidates, then re-score only those candidates with the full-size vectors.
 :::
-
-Next: [judging answers](lesson:rag/judging-answers).

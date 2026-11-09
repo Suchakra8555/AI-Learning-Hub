@@ -162,5 +162,3 @@ Keyword wins on exact codes or names, like "ERR-4021". Vector wins on different 
 :::check The right chunk is ranked 14th out of 20 candidates. Which tool helps?
 A reranker. It reorders the candidates so the right one reaches the top few that go into the prompt.
 :::
-
-Next: [writing prompts and citations](lesson:rag/prompt-and-citations).

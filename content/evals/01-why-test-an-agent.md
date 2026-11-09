@@ -50,5 +50,3 @@ Start with 20 you wrote by hand ([how](lesson:rag/measure-quality)). Add every r
 :::check What does an online eval have that an offline eval lacks, and what does it lack?
 It sees real production traffic, but it has no reference answers, so it can only check patterns and quality signals.
 :::
-
-Next: [judges and refining](lesson:evals/judges-and-refining).

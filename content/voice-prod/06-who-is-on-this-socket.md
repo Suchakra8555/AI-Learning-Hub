@@ -135,5 +135,3 @@ Two separate commands leave a gap. Two sockets with the same ticket could both G
 :::check The gateway strips the internal-key header. Why does it also refuse paths with an `internal` segment?
 Defense in depth. If a service ever trusted the path alone, or the header check had a bug, the public gateway still would never forward a request to an internal route.
 :::
-
-Next: [Never block the audio loop](lesson:voice-prod/never-block-the-audio-loop)

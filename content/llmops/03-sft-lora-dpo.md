@@ -47,5 +47,3 @@ Training needs a GPU for practical speed, and we ran none here. We ran only the 
 :::check Why can LoRA fit on a smaller GPU than full fine-tuning?
 Only the thin add-on matrices are trained, so far fewer numbers need gradients and optimizer memory.
 :::
-
-Next: [tracking experiments and versions](lesson:llmops/tracking-and-versions).

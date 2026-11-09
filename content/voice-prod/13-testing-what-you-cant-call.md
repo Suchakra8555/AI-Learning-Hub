@@ -114,5 +114,3 @@ The fake has no socket and no blocking read. The bug came from how the real clie
 :::check What does the parity script catch that unit tests of each service would miss?
 A disagreement between two sides: a provider in the catalog with no builder, or a keyword argument a newer plugin no longer accepts. Each side passes its own tests. They only fail together.
 :::
-
-Next: [Shipping, and the checklist](lesson:voice-prod/shipping-and-the-checklist)

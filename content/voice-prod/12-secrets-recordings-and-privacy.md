@@ -140,5 +140,3 @@ The values are secrets. A boot failure log goes to the same place as every other
 :::check Recording defaults to ON when the config service is down. Name two ways that hurts.
 Calls for assistants with recording off get recorded anyway, which can break the customer's promise to callers or the law where they operate. And because the consent flag is never checked, no disclosure is played on those calls either.
 :::
-
-Next: [Testing what you can't call](lesson:voice-prod/testing-what-you-cant-call)

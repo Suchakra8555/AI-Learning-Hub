@@ -113,5 +113,3 @@ On a phone leg, convert the codec and re-cut the frames yourself, and let the me
 :::check Why can decoding µ-law be a lookup table while encoding PCM16 usually isn't?
 A µ-law byte has only 256 values, so you can precompute every answer. A 16-bit sample has 65,536 values. You could build that table too, but people compute the encode instead.
 :::
-
-Next: [Two doors: SIP and WebSocket](lesson:voice-prod/two-doors-sip-and-websocket)

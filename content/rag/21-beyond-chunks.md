@@ -59,5 +59,3 @@ Our [research notes on Awesome-RAG](lesson:research/awesome-rag) list every sour
 :::check A manager asks for "the main complaints across all support tickets". Why does top-5 chunk search fail?
 The answer is spread over thousands of chunks, and top-5 shows only a handful. You need aggregation or a graph or summary approach.
 :::
-
-Next: see all of this in a real product, starting with [the RAGFlow tour](lesson:ragflow/tour).

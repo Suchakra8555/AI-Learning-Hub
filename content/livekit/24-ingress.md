@@ -154,5 +154,3 @@ The server's `ingress.rtmp_base_url`. The server builds the URL from that key, s
 :::check Why does an RTMP ingress stay listed after the stream stops, while a URL ingress is gone when its file ends?
 RTMP and WHIP ingresses are reusable: the stream key stays valid and the ingress waits in a disconnected state. A URL ingress is a one-time pull. It starts at creation and leaves when the media is consumed.
 :::
-
-Next: [Production deployment](lesson:livekit/production-deployment)

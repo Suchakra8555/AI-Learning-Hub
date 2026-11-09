@@ -162,5 +162,3 @@ Messages added to `turn_ctx` last for that turn only. Call `await self.update_ch
 :::check You copy a docs example that uses `fallback=[...]` on `inference.TTS` into a self-hosted agent. Why won't that work, and what do you use instead?
 That fallback runs inside LiveKit Inference, which is Cloud-only. Use `tts.FallbackAdapter([primary_plugin, backup_plugin])`, which runs in your agent process.
 :::
-
-Next: [Models without the cloud](lesson:livekit/models-without-the-cloud)

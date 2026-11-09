@@ -32,5 +32,3 @@ A voice agent is three programs in a row, kept fast by streaming. Most of your t
 :::check Why does the TTS start speaking before the model has finished writing?
 Waiting for the full reply would add silence. Streaming lets the caller hear the start while the rest is still being written.
 :::
-
-Next: [where the milliseconds go](lesson:voice/where-the-milliseconds-go).

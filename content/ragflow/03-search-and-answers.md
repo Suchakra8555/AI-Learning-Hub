@@ -97,5 +97,3 @@ Scale mismatch. Raw BM25 scores can run far above 1 while cosine stays at or bel
 :::check Why might a team choose a weighted sum over RRF anyway?
 It has a dial. You can tune how much keyword versus vector counts per collection, and you can blend in other scores, such as a reranker's, in the same formula.
 :::
-
-Next: [agents, trees, graphs, and what is missing](lesson:ragflow/agents-trees-graphs-and-gaps).

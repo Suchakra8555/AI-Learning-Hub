@@ -168,5 +168,3 @@ The count is updated lazily. On the lab it read 0 with two participants ACTIVE, 
 :::check How do you move a caller from one room to another on self-hosted LiveKit?
 `MoveParticipant` isn't implemented there. Remove the caller with `RemoveParticipant` and give their client a token for the new room.
 :::
-
-Next: [Webhooks and events](lesson:livekit/webhooks-and-events)

@@ -257,5 +257,3 @@ A 20 ms frame that arrives after its play time is useless, and while TCP waits f
 :::check Two peers each have a srflx candidate, but the call only works through TURN. What is the likely cause?
 At least one NAT is symmetric (address-dependent mapping). It gives a different public port for each destination, so the port STUN reported doesn't work for the other peer and only the relay path gets through.
 :::
-
-Next: [Mesh, MCU and SFU](lesson:livekit/mesh-mcu-sfu)

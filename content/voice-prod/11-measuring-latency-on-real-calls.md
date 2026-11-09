@@ -117,5 +117,3 @@ Streaming TTS waits for a full sentence before it speaks. A fast first token fol
 :::check The mean is 949 ms and the p50 is 855 ms. What does that gap tell you?
 A few very slow turns pull the mean up. The distribution has a long tail, so look at p95 and p99, and find which stage the slow turns share.
 :::
-
-Next: [Secrets, recordings, and privacy](lesson:voice-prod/secrets-recordings-and-privacy)

@@ -96,5 +96,3 @@ The method has a setting that matters a lot, and its best value depends on your 
 :::check What do sentence window and parent and child have in common?
 Both search small pieces for precision, then hand the model a bigger piece for context. They differ only in how big the bigger piece is.
 :::
-
-Next: [vectors at scale](lesson:rag/vectors-at-scale).

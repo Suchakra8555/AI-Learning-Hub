@@ -30,5 +30,3 @@ A model is a text guesser with no memory and no access to your data. Your job as
 :::check Why does a model sometimes state something false with full confidence?
 It is guessing the most likely next text, not checking facts. Likely-sounding and true are different things.
 :::
-
-Next: [tokens and context windows](lesson:foundations/tokens-and-context).

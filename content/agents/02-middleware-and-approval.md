@@ -60,5 +60,3 @@ The first call stops at the question. The second call resumes with "no", so the 
 :::check Why does the resume call need the same thread ID as the first call?
 The saved state is stored under that ID. A different ID would start a new run and not continue the paused one.
 :::
-
-Next: [LangGraph by hand](lesson:agents/langgraph-by-hand).

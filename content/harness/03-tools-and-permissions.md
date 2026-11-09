@@ -115,5 +115,3 @@ The model's output is only text until the harness acts on it. All control, check
 :::check Why call resolve() before checking a path?
 It turns tricks like `../` into the real final path. Without it, a name that looks safe can point outside the workspace.
 :::
-
-Next: [context, memory, and the session log](lesson:harness/context-memory-and-the-log).

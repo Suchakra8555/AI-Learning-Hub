@@ -205,5 +205,3 @@ For someone in the room to subscribe to the caller's audio. An inbound call keep
 :::check An outbound call fails with USER_UNAVAILABLE and your agent process stays in the room. Why?
 `AgentSession` closes itself only for `CLIENT_INITIATED`, `ROOM_DELETED` and `USER_REJECTED`. For `USER_UNAVAILABLE` and `SIP_TRUNK_FAILURE` you have to call `ctx.shutdown()` yourself.
 :::
-
-Next: [Self-hosted SIP](lesson:livekit/self-hosted-sip)

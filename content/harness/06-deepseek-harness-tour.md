@@ -177,5 +177,3 @@ The docs state it as a requirement. We did not find the reason in the pages we r
 :::check What is `--dump-config` good for?
 Seeing exactly which plugins and settings the harness composed from all its layers, so you can debug "why is this plugin loaded?" without guessing.
 :::
-
-Next: [build and extend a mini harness yourself](lesson:harness/build-a-mini-harness).

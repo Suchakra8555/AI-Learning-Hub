@@ -78,5 +78,3 @@ RAG gives a model knowledge. A harness gives a model hands, and keeps them on a 
 :::
 
 Before you move on, the rest of this track holds upgrades to reach for when your test set shows a specific problem: reranking, rewriting the question, other ways to chunk, vectors at scale, judging answers, agentic search, and graphs. Then a case study shows all of it inside one real product.
-
-Next: [rerank and rewrite](lesson:rag/rerank-and-rewrite).

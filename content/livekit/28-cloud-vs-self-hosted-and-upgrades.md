@@ -206,5 +206,3 @@ The old kwargs and `WorkerOptions` still work, but they warn and are marked for 
 :::
 
 The Voice in production track comes next. It is a case study that shows these pieces inside a real phone platform, including the mistakes it made by skipping the docs.
-
-Next: [Voice in production: the system map](lesson:voice-prod/the-system-map)

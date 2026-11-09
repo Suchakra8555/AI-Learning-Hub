@@ -68,5 +68,3 @@ For a fixed output shape, pass `response_format` with a data class and read `res
 :::check In the example, what tells the model what `get_weather` does?
 The function's docstring, plus its type hints. Write them for the model, not just for people.
 :::
-
-Next: [middleware and human approval](lesson:agents/middleware-and-approval).

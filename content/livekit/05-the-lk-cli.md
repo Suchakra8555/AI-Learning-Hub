@@ -218,5 +218,3 @@ The `LIVEKIT_*` env vars rank above the default project. Pass `--project <name>`
 :::check Does `lk token create` need the server to be running?
 No. It signs the JWT locally with the API secret. The server only checks the signature later, when a client connects or calls the API with that token.
 :::
-
-Next: [Rooms, participants and tracks](lesson:livekit/rooms-participants-tracks)

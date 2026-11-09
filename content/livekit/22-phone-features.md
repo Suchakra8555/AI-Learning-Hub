@@ -178,5 +178,3 @@ Voicemail answers with `200 OK`, the same as a person, so the call counts as ans
 :::check Inbound calls ring for a while and then fail with 486. The worker is running. What do you check?
 That the dispatch rule's `room_config.agents[].agent_name` matches the `agent_name` the worker registered. If no agent subscribes to the caller, the trunk's `ringing_timeout` expires and LiveKit sends `486 Busy Here`.
 :::
-
-Next: [Recording calls with egress](lesson:livekit/egress-recording)

@@ -82,5 +82,3 @@ Use it when single-search recall is the problem you have measured. Otherwise, fi
 :::check Why is a round limit non-negotiable in an agentic loop?
 The loop is controlled by a model's judgment, which can fail. A fixed limit guarantees that cost and time stay bounded.
 :::
-
-Next: [beyond plain chunks](lesson:rag/beyond-chunks).

@@ -193,5 +193,3 @@ Most likely an older event that was retried after your receiver was down, arrivi
 :::check Why use the `participant_joined` webhook, not the client's `ParticipantConnected` event, to start billing a call?
 `ParticipantConnected` fires inside a client when signaling is up, before media works, and only if that client is running. `participant_joined` is sent to your backend when the participant is `active`, meaning media is flowing.
 :::
-
-Next: [Media in depth](lesson:livekit/media-in-depth)

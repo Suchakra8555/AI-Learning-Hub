@@ -188,5 +188,3 @@ Two tracks are published (caller and agent). The caller's track goes to the agen
 :::check Why not use an MCU so every client receives only one stream?
 The MCU must decode and re-encode every stream, which costs server CPU and adds delay. It also hands out a mix, so the agent and the recorder lose the separate per-speaker tracks they want.
 :::
-
-Next: [Run it yourself](lesson:livekit/run-it-yourself)

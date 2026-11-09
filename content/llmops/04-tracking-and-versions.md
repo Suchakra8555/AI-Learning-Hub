@@ -36,5 +36,3 @@ Install MLflow, run `mlflow ui`, and log two runs with different parameters in a
 :::check Why use an alias like `champion` and not a version number in your serving code?
 You can switch or roll back the model by moving the alias, without changing or redeploying the code.
 :::
-
-Next: [scoring and watching what you ship](lesson:llmops/scoring-and-watching).

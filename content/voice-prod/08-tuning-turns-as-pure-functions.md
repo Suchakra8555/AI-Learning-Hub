@@ -146,5 +146,3 @@ The agent also stops when it finishes a sentence. The carrier would then throw a
 :::check An operator sets interruption sensitivity to 0.25. How long must the caller speak to interrupt?
 1.0 − 0.8 × 0.25 = 0.8 s.
 :::
-
-Next: [Events that don't lie](lesson:voice-prod/events-that-dont-lie)

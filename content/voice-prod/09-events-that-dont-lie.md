@@ -132,5 +132,3 @@ A consumer can finish the work and crash before XACK. The entry stays pending an
 :::check You add an analytics service with a new group created at `0`. What happens on its first start?
 It reads every entry still in the stream, from the oldest. With no MAXLEN that can be the full history, so it processes months of old calls as if they were new.
 :::
-
-Next: [Timeouts, retries, and saying goodbye](lesson:voice-prod/timeouts-retries-and-goodbyes)
