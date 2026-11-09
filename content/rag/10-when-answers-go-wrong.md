@@ -95,5 +95,3 @@ Step 4: the prompt. Compare the answer with the chunk, check whether the model i
 :::check Why save the exact prompt for each answer?
 You can only judge whether the model misused the notes if you can see exactly which notes and instructions it had.
 :::
-
-Next: [fast, cheap, and safe](lesson:rag/fast-cheap-safe).

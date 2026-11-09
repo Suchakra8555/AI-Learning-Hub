@@ -96,5 +96,3 @@ Deletion handling. Chunks from removed sources must be removed from the index du
 :::check Where should live stock levels be stored, in the index or somewhere else?
 Somewhere else. They change too fast for an index. Let the bot call a live lookup at question time.
 :::
-
-Next: [going to production](lesson:rag/going-to-production).

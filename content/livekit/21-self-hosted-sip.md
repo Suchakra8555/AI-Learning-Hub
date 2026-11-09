@@ -206,5 +206,3 @@ At the `c=` address in the SDP answer from livekit-sip. A private address means 
 :::check Your outbound error handler catches `SipCallError`, but a call to a dead trunk crashes the job. Why?
 With no SIP response, there is no `sip_status_code`. The SDK raises a plain `ServerError` (`TwirpError`), not a `SipCallError`. Catch `ServerError` too.
 :::
-
-Next: [Phone features](lesson:livekit/phone-features)

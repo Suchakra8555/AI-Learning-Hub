@@ -225,3 +225,8 @@ summary: Every hard word in the course, said simply. If a word is missing, add i
 **TURN/TLS**: A media relay reached over TLS on port 443, so it looks like HTTPS and passes strict firewalls. See [production deployment](lesson:livekit/production-deployment).
 **Node selector**: The livekit-server setting that picks which node hosts a new room, for example region-aware with a `sysload_limit`.
 **Playout delay**: How long a subscriber buffers video before showing it. Lower means fresher but choppier.
+**Zero-shot prompting**: Asking a model to do a task with no examples in the prompt. See [zero-, one- and few-shot](lesson:prompting/zero-one-few-shot).
+**Chain of thought**: Getting a model to write its steps before the final answer. See [chain of thought](lesson:prompting/chain-of-thought).
+**ReAct**: A prompt pattern where the model alternates thoughts, tool actions and observations. See [ReAct](lesson:prompting/react).
+**Self-consistency**: Sampling several reasoning chains and keeping the answer most of them agree on. See [self-consistency](lesson:prompting/self-consistency).
+**Tree of thought**: Reasoning that tries several branches, scores them and drops weak ones. See [tree of thought](lesson:prompting/tree-of-thought).

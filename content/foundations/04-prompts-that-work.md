@@ -41,4 +41,4 @@ Message: "<the new message>"           ->
 They show the exact format and edge cases once, so the model copies the pattern instead of guessing from words.
 :::
 
-Next: [structured output](lesson:foundations/structured-output).
+This lesson covers the habits that matter most. The [Prompt engineering track](lesson:prompting/what-prompt-engineering-is) goes further: zero-, one- and few-shot examples, chain of thought, ReAct, guardrails and more.

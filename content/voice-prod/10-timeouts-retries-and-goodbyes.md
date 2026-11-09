@@ -145,5 +145,3 @@ Each replica locks the rows it picked, and the other replica skips them, so no r
 :::check The bridge drains for 300 s but Fargate kills at 120 s. Why are bridge calls still safe on Fargate, and agent calls are not?
 The load balancer holds the bridge in deregistration for 330 s before ECS sends SIGTERM, so calls drain before the 120 s clock starts. The agent worker has no load balancer, so its 120 s starts right away.
 :::
-
-Next: [Measuring latency on real calls](lesson:voice-prod/measuring-latency-on-real-calls)

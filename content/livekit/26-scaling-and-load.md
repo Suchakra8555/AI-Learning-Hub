@@ -155,5 +155,3 @@ A room stays on the node it was placed on. Load only affects where new rooms go,
 :::check Your agent servers use the default `load_threshold`. At what CPU level should the autoscaler add servers?
 Below 0.7, for example at 0.5 as the docs suggest. By the time a server reaches 0.7 it already refuses jobs, so new capacity has to be starting before then.
 :::
-
-Next: [Robotics and hardware](lesson:livekit/robotics-and-hardware)

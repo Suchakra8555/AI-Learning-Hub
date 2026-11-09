@@ -106,5 +106,3 @@ A named recipe that says which plugins to run and how they are configured. Diffe
 :::check Why is a plugin system also a security question?
 A plugin runs code inside the harness, with whatever access the harness has. Untrusted plugins are untrusted code.
 :::
-
-Next: [a guided tour of DeepSeek Harness](lesson:harness/deepseek-harness-tour).

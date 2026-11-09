@@ -83,5 +83,3 @@ It searches your own documents for the pieces most related to the question, so t
 :::check Your return policy changes next week. Which approach copes better, and why?
 RAG. You edit the document and update the search index. A model trained on the old policy would need training again.
 :::
-
-Next: [the whole picture](lesson:rag/the-whole-picture), a one-page map of every part you will meet.

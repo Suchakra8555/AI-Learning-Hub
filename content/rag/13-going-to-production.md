@@ -129,5 +129,3 @@ So a user report can be matched to the exact log line, retrieved chunks, and pro
 :::check Why must a refusal threshold be tuned on real scores?
 Search almost always returns something. Only by looking at the scores of good and bad matches on your eval questions can you pick a cut-off that refuses nonsense without refusing real questions.
 :::
-
-Last lesson: [the launch checklist](lesson:rag/launch-checklist).

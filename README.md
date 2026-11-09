@@ -26,17 +26,18 @@ No `npm install` is needed. To build static files without the server: `npm run b
 | Track | Lessons | What it covers |
 |---|---|---|
 | Foundations | 5 | Models, tokens, first API call, prompts, structured output |
+| Prompt engineering | 9 | Zero-, one- and few-shot, chain of thought, role and context, ReAct, retrieval-augmented prompting, self-consistency, tree of thought, guardrails |
 | RAG: from POC to production | 21 | Reading documents, chunking, embeddings, search, prompts, evals, safety, freshness, going live; then rerank and rewrite, contextual chunks, more ways to chunk, vectors at scale, judging answers, agentic RAG, graphs and trees |
 | Case study: RAGFlow | 4 | A real RAG product read from its code: parsing, chunk templates, weighted-sum search, citations, agentic search, gaps |
 | Agents and LangChain | 4 | Agents, middleware, LangGraph, deep agents, managed deep agents, OpenWiki, integrations |
 | Harness engineering | 8 | The loop, tools, permissions, logs, plugins, a tour of DeepSeek Harness, a mini harness |
 | Evals and observability | 3 | Datasets, judges, live checks, LangSmith Engine, Insights |
+| Deploy and monitor | 4 | Tracing, dashboards, alerts, hosting options, LLM gateway, the docs watcher |
 | Voice AI | 4 | The STT, model, TTS chain, latency, turn-taking, WebRTC, SIP, LiveKit |
 | LiveKit, self-hosted | 28 | WebRTC from the wire up, SFUs, running the server, the lk CLI, rooms, tokens, server API, webhooks, media, data, Agents (server, dispatch, turns, tools, workflows, local models), frontends, testing, SIP, egress, ingress, deployment, scaling, upgrades |
 | Voice in production | 14 | A real phone-agent platform: phone audio, carrier adapters, socket auth, async hot paths, event streams, retries and drain, latency percentiles, secrets and recordings, testing, shipping, and a production checklist |
 | LLMOps and fine-tuning | 5 | Prompt vs RAG vs fine-tune, training data, SFT, LoRA, DPO, MLflow, scoring, monitoring |
 | Inference and edge | 4 | Prefill, decode, KV cache, vLLM, SGLang, TensorRT-LLM, Dynamo, GGUF, benchmarks |
-| Deploy and monitor | 4 | Tracing, dashboards, alerts, hosting options, LLM gateway, the docs watcher |
 | Dig deeper | 5 | Source notes for Awesome-RAG, ai-engineering-hub, LangChain, voice and LLMOps, RAGFlow |
 
 The RAG track and the Harness track are separate. The Harness track teaches the ideas with DeepSeek Harness as an example and does not build on top of it.

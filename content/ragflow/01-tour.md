@@ -62,5 +62,3 @@ They have different jobs. The search engine needs fast keyword and vector search
 :::check Why run indexing as a queued job instead of inside the upload request?
 Parsing a large PDF with OCR can take minutes. A queue lets the upload return at once, lets several workers share the load, and lets a failed job be retried on its own.
 :::
-
-Next: [how RAGFlow reads and cuts documents](lesson:ragflow/ingestion).

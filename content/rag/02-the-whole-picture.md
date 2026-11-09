@@ -78,5 +78,3 @@ Keep this page open as a map. Every later lesson names which box on the diagram 
 :::check If an answer is wrong, why look at the retrieved chunks before changing the model?
 Because most wrong answers come from the model never being shown the right text. If the right chunk is not in the prompt, no model can answer correctly.
 :::
-
-Next: [build the smallest version in about 50 lines](lesson:rag/poc-in-50-lines).

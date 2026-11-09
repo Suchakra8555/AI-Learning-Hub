@@ -41,5 +41,3 @@ We did not run Engine. It needs a LangSmith organization and traced production r
 :::check Engine opens a pull request and fix validation says "inconclusive". Is the bug fixed?
 No. Inconclusive means the check had no trustworthy evidence either way. Test the change yourself before merging.
 :::
-
-Next: [turn on tracing](lesson:deploy/tracing-and-dashboards).

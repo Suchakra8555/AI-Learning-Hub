@@ -142,5 +142,3 @@ The string is a LiveKit Inference model name, served through LiveKit Cloud. `dee
 :::check Your local Whisper STT gives no interim transcripts. Is something broken?
 No. A Whisper server transcribes finished clips, so `openai.STT` reports `streaming=False` and the session wraps it with VAD. You get one final transcript per utterance.
 :::
-
-Next: [Frontends and sessions](lesson:livekit/frontends-and-sessions)

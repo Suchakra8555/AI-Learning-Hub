@@ -143,5 +143,3 @@ So answers can cite sources, search can filter by date or audience, and you can 
 :::check A spreadsheet row reads "Pro 20 yes". What would you do before indexing it?
 Turn it into a sentence with the column names, such as "Plan: Pro. Monthly price: 20 dollars. Includes support: yes."
 :::
-
-Next: [chunking](lesson:rag/chunking), cutting clean text into good pieces.

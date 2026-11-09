@@ -125,5 +125,3 @@ livekit-server, an agent server, and a backend that issues tokens. Redis is opti
 :::check A docs example uses `inference.LLM("openai/gpt-4.1-mini")`. Will it work against your self-hosted server?
 No. LiveKit Inference is Cloud-only. Use the model's plugin with your own API key, or a local model through an OpenAI-compatible `base_url`.
 :::
-
-Next: [WebRTC from the wire up](lesson:livekit/webrtc-from-the-wire-up)

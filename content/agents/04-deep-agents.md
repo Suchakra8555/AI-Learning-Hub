@@ -67,5 +67,3 @@ All the sources, page by page, and what we could not read, are in our [LangChain
 :::check Why use `virtual_mode=True` with a file backend?
 Without it, the backend has no path limit, so an agent could read or write outside the project folder.
 :::
-
-Next, test what you build: [Evals and refining](lesson:evals/why-test-an-agent).

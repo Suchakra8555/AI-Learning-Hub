@@ -55,5 +55,3 @@ Pick thresholds from a week of real data, not guesses.
 :::check A dashboard shows zero errors but users say answers are wrong. What is missing?
 Quality signals: feedback scores and evals. Error counts only show crashes, not wrong but well-formed answers.
 :::
-
-Next: [where to deploy](lesson:deploy/where-to-deploy).

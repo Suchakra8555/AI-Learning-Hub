@@ -38,5 +38,3 @@ A large context window lets you paste more in. It does not make the model read e
 :::check Your prompt is 3,000 tokens and the model's window is 4,000. What limits the answer length?
 The window counts prompt plus answer together, so only about 1,000 tokens are left for the answer.
 :::
-
-Next: [your first API call](lesson:foundations/first-api-call).

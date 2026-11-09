@@ -154,5 +154,3 @@ The fake LLM always calls the tool when it sees "order 123". A real model decide
 :::check Why does `lambda order_id: ...` break as a mock on 1.8.11?
 The mock gets the real tool's positional arguments in order, cut to the number it declares, and the RunContext is first. So `order_id` receives the context. Declare `ctx` first.
 :::
-
-Next: [SIP fundamentals](lesson:livekit/sip-fundamentals)

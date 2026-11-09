@@ -190,5 +190,3 @@ In `call-7`. The server reads the room from the signed token, not from the URL o
 :::check On self-hosted LiveKit you remove an abusive participant. What stops them coming back?
 Nothing in the server revokes their token, since revocation is Cloud-only. Their old token works until it expires, so keep TTLs short, and make sure your backend won't mint them a new one.
 :::
-
-Next: [The server API](lesson:livekit/the-server-api)

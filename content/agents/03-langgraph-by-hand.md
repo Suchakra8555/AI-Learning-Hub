@@ -56,5 +56,3 @@ Add a fourth node `report` after `act` that appends a final line. Re-run. Then r
 :::check What does a reducer decide?
 How a node's returned change is merged into the existing state: replace, or append.
 :::
-
-Next: [deep agents](lesson:agents/deep-agents).

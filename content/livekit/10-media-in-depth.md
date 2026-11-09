@@ -195,5 +195,3 @@ Playout delay hints apply only to video. Audio buffering is automatic and isn't 
 :::check The publisher sends 8 kHz and the subscriber asks for 16 kHz. Who resamples, and when would you have to do it yourself?
 The SDK, on the subscribing side, when `AudioStream` delivers frames at the rate you asked for. You have to resample yourself when you read audio from a file and push it into a source at a different rate.
 :::
-
-Next: [Data and state](lesson:livekit/data-and-state)

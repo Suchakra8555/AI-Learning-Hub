@@ -89,5 +89,3 @@ Only the newest command matters. An RPC is a request that waits for a reply, so 
 :::check You set playout delay to 0 and 10 ms, and the operator's video gets choppy while audio sounds fine. Why only the video?
 Playout delay hints apply to video only. Audio keeps its automatic buffering, so it still smooths out jitter. The video now has almost no buffer, so late frames show as stutter.
 :::
-
-Next: [Cloud vs self-hosted, and upgrades](lesson:livekit/cloud-vs-self-hosted-and-upgrades)

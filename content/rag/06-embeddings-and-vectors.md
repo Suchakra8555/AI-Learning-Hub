@@ -117,5 +117,3 @@ Each model draws its own map. Numbers from one model mean nothing on another mod
 :::check You search for "ERR-4021" and get chunks about "ERR-4012". Which method would you add, and why?
 Keyword search (such as BM25). It matches exact strings, so it separates the two codes.
 :::
-
-Next: [retrieval that works](lesson:rag/retrieval-that-works).

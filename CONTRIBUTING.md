@@ -40,7 +40,7 @@ time: 15 min
 ---
 ```
 
-3. Write the lesson. End with one or two **check questions** and a link to the next lesson.
+3. Write the lesson. End with one or two **check questions**. Do not type a "Next" line: the build adds an Up next card from the folder order, and `npm run check` fails if a `Next:` line with a lesson link is added.
 4. Run `npm run check`. It builds the site without writing files and fails on broken lesson links.
 5. Run `npm run dev` and read your page in the browser, on a narrow window too.
 

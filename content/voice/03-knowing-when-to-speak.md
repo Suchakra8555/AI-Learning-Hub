@@ -34,5 +34,3 @@ We did not run Silero VAD or any LiveKit code here. For a hands-on exercise, fol
 :::check A caller says "I need to change my... um... booking". The agent replies after "my". What setting do you adjust?
 The endpointing delay, or use a turn-detector model that reads meaning, so a mid-sentence pause is not treated as the end of the turn.
 :::
-
-Next: [WebRTC, phones, and LiveKit](lesson:voice/webrtc-sip-livekit).

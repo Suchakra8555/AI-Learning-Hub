@@ -57,5 +57,3 @@ This repo's scripts were run without a key, so the no-key path is tested. A live
 :::try
 Call it twice with the same question. Do you get the same words? Then add "Answer in five words." and compare. You have just seen why prompts matter.
 :::
-
-Next: [prompts that work](lesson:foundations/prompts-that-work).

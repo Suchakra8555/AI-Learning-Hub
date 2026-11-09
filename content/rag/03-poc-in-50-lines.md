@@ -131,5 +131,3 @@ Without that instruction, a model tends to fill gaps with a plausible guess. Giv
 :::check The question says "customs fees" and the document says "import duties". What happens with keyword search, and why?
 It finds no shared words, so the right paragraph scores low or zero. Keyword search matches spelling, not meaning.
 :::
-
-Next: [reading documents](lesson:rag/reading-documents). Before cutting text well, you need clean text to cut.

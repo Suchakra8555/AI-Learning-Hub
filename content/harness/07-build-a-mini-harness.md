@@ -113,5 +113,3 @@ Exercise 4. Hooks let you add a rule as a separate piece of code that the loop c
 :::check Why must scrubbing happen before the log write?
 The log is append-only and also feeds the model's memory. Once a secret is written, it stays and can be sent onward.
 :::
-
-Next: [safety, and a checklist for any harness](lesson:harness/safety-and-checklist).

@@ -165,5 +165,3 @@ A reliable data packet holds at most 15 KiB, so it's too big. Send it as a text 
 :::check A participant who joins mid-call should see that the agent is "thinking". Text stream or attribute?
 An attribute. The server stores it and syncs it to late joiners. A text stream reaches only participants connected when it opened.
 :::
-
-Next: [The agents mental model](lesson:livekit/agents-mental-model)

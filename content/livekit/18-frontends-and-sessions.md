@@ -181,5 +181,3 @@ Signing needs the API secret. Any code in the browser can be read, so the secret
 :::check The token from your endpoint has no roomConfig, and the agent never joins. What else could bring it in?
 An explicit dispatch through the API (`lk dispatch create --room ... --agent-name ...`). Or an agent server registered with no `agent_name`, which is sent to every new room. The docs advise against that for most apps ([Agent dispatch](https://docs.livekit.io/agents/server/agent-dispatch)).
 :::
-
-Next: [Testing and observability](lesson:livekit/testing-and-observability)

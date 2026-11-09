@@ -42,5 +42,3 @@ Serving many requests together lets one load of the weights serve all of them. *
 :::check Why does a long prompt use more GPU memory even before the model answers?
 The KV cache stores keys and values for every prompt token, and it grows with the prompt length.
 :::
-
-Next: [serving engines compared](lesson:inference/serving-engines).

@@ -199,5 +199,3 @@ Pin the turn detector to `v1-mini` and interruption to `vad`, then tune endpoint
 :::check A cough stops the agent, then it goes quiet for two seconds and carries on. Is that a bug?
 No. The cough passed `min_duration` and paused the agent. No transcript came, so after `false_interruption_timeout` (2.0 s) the agent resumed, since `resume_false_interruption` is on by default. Lower the timeout to shorten the gap, or raise `min_words` (needs STT) to ignore sounds without words.
 :::
-
-Next: [Tools, tasks and workflows](lesson:livekit/tools-tasks-and-workflows)

@@ -206,5 +206,3 @@ A MediaSource with an AudioConfig whose routes send participant kind `AGENT` to 
 :::check The egress container logs "service ready", but no worker ever takes your StartEgress jobs. What do you check first?
 That the worker's `redis.address` is the same Redis the server uses. The server hands jobs over through Redis, so a worker on another Redis never sees them.
 :::
-
-Next: [Ingress](lesson:livekit/ingress)

@@ -133,5 +133,3 @@ It is too vague to change behavior. Concrete rules work better: use only the not
 :::check A model answer cites [5] but you only sent 3 notes. What does that tell you?
 The citation is invented. This is why a validity check on citations is worth adding.
 :::
-
-Next: [measure quality](lesson:rag/measure-quality). Stop guessing, start counting.

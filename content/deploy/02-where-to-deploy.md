@@ -42,5 +42,3 @@ We read these pages. We did not deploy anything. Plans change, so confirm terms 
 :::check Why is "standalone" more work than Cloud?
 You run the servers, database, queue scaling, and upgrades yourself. Cloud handles those.
 :::
-
-Next: [one door for many models](lesson:deploy/llm-gateway).

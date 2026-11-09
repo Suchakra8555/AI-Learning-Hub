@@ -125,5 +125,3 @@ An idea that falls across a cut. With overlap, at least one chunk holds the idea
 :::check Why include the heading in every chunk?
 It tells both search and the model what the chunk is about, and it lets a short chunk make sense on its own.
 :::
-
-Next: [embeddings and vectors](lesson:rag/embeddings-and-vectors), search that understands meaning and not just spelling.

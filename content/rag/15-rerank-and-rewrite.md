@@ -89,5 +89,3 @@ Reranking adds delay and cost per request. Rewriting adds a model call before se
 :::check You have a reranker. Why not rerank the whole index?
 Rerankers score one chunk at a time with a heavy model. Doing that for every chunk is far too slow and costly. You use fast search to cut the list down first.
 :::
-
-Next: [contextual chunks](lesson:rag/contextual-chunks).

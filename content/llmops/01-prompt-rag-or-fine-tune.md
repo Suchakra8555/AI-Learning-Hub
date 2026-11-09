@@ -30,5 +30,3 @@ A model trained on your documents does not reliably quote them, and it goes stal
 :::check Customers ask about this month's new return policy and the model answers with last year's. Prompt, RAG, or fine-tune?
 RAG. The problem is missing and changing facts, and retrieval can use the new document the day it is published.
 :::
-
-Next: [training data that works](lesson:llmops/training-data).

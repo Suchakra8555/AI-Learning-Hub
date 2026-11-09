@@ -45,5 +45,3 @@ The ten rows in the file are made up, only to show the shape. Real tuning needs 
 :::check Training accuracy is 99% and hold-out accuracy is 60%. What happened?
 The model memorized its training examples (overfitting). The hold-out set exists to catch exactly this.
 :::
-
-Next: [SFT, LoRA, and DPO](lesson:llmops/sft-lora-dpo).

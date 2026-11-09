@@ -201,5 +201,3 @@ The caller's track already existed when the agent connected, so it arrived with 
 :::check What is the difference between a TrackPublication and a Track?
 The publication is the server's record that a track exists: sid, source, name, muted, subscribed. Every participant sees it. The Track is the media itself, and it only exists on the publication once you're subscribed.
 :::
-
-Next: [Tokens and grants](lesson:livekit/tokens-and-grants)

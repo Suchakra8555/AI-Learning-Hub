@@ -43,5 +43,3 @@ If you keep editing the prompt until the test cases pass, you have fitted the pr
 :::check Your judge gives the same score to every answer. What do you check first?
 The judge's rule. If it is vague, the judge cannot separate good from bad. Compare its scores with human labels on a few answers and tighten the rule.
 :::
-
-Next: [closing the loop with Engine](lesson:evals/engine-closing-the-loop).

@@ -123,5 +123,3 @@ If the answer is wrong you need to know whether search missed the right text or 
 :::check Your hit rate went from 90% to 95% on 20 questions. Should you celebrate?
 Not yet. That is one more question out of twenty. Grow the set and look at which question changed before deciding the change helped.
 :::
-
-Next: [when answers go wrong](lesson:rag/when-answers-go-wrong), a routine for finding out why.

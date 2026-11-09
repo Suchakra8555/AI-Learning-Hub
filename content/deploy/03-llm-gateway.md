@@ -39,5 +39,3 @@ The price is one more system that can fail, and one more place your prompts pass
 :::check What is the main risk of routing everything through one gateway?
 It becomes a single point of failure and a place where all your prompts pass, so it needs the same care as a core service.
 :::
-
-Next: [watching the docs for changes](lesson:deploy/watching-the-docs).

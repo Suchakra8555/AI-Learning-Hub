@@ -33,5 +33,3 @@ Download a small GGUF model, run `llama-server`, and call its OpenAI-style API f
 :::check Why does a 4-bit model run where the 16-bit one will not?
 Each weight takes about a quarter of the memory, so the whole model is much smaller. In the README's example, 14.96 GiB becomes 4.58 GiB.
 :::
-
-Next: [benchmark honestly](lesson:inference/benchmark-honestly).

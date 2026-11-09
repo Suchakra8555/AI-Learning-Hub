@@ -110,5 +110,3 @@ They live for different lengths of time. The stream protocol holds state for one
 :::check A catalog key has no registry builder. When does the customer find out?
 Without the parity check, only when a real call starts and the agent raises an error. The config service accepts the assistant, because the key is in its catalog. The parity check moves that failure to CI.
 :::
-
-Next: [Who is on this socket?](lesson:voice-prod/who-is-on-this-socket)

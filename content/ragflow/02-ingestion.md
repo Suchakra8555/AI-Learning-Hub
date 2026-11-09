@@ -77,5 +77,3 @@ If a chunk's text changes but its ID stays the same, an ID-only key would serve 
 :::check The `laws` template does not repeat parent heading text in each chunk, but `book` does. Why might that be?
 In a law, the article number is usually enough context, and legal articles can be long, so repeating chapter text wastes space. A book's deep sub-section often makes no sense without its chapter and section titles.
 :::
-
-Next: [how RAGFlow searches and answers](lesson:ragflow/search-and-answers).

@@ -101,5 +101,3 @@ The gateway can't proxy WebSockets, and carriers need a long-lived socket. The l
 :::check What does a new stream get while the bridge is draining, and why that code?
 Close code 1013, "try again later". The bridge is shutting down, so the caller should be served by another instance. The 503 on `/health` already steers the load balancer away.
 :::
-
-Next: [How the platform rides LiveKit](lesson:voice-prod/how-the-platform-rides-livekit)

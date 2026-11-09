@@ -109,5 +109,3 @@ The model asks for a tool, so the harness runs it and loops. Or the model gives 
 :::check A tool throws an error. Why send the error to the model instead of stopping?
 The model can read the message and try a different approach. Stopping would turn a small, fixable problem into a failure.
 :::
-
-Next: [tools and permissions](lesson:harness/tools-and-permissions).

@@ -168,5 +168,3 @@ In production, put TLS in front of 7880, give TURN its own domain and certificat
 :::check On a cloud VM whose network card only has a private 10.x address, clients connect to signaling but no audio flows. What is the likely missing setting?
 `rtc.use_external_ip: true`. On a cloud VM the process doesn't see its public IP, so without STUN discovery it advertises an address clients can't reach.
 :::
-
-Next: [Scaling and load](lesson:livekit/scaling-and-load)

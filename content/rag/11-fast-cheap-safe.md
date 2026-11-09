@@ -140,5 +140,3 @@ Text that never reaches the prompt cannot be revealed. A model's promise to keep
 :::check What are the biggest drivers of cost in a RAG request?
 The number of tokens in the prompt, mostly the retrieved chunks, and the length of the model's answer.
 :::
-
-Next: [keeping data fresh](lesson:rag/keeping-data-fresh).

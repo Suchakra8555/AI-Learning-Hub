@@ -52,5 +52,3 @@ A reply that is valid JSON can still be wrong. `{"urgent": false}` for an angry 
 :::check Why validate the reply when you asked for JSON in the prompt?
 A prompt is a request, not a guarantee. The model can add words, miss a field, or use a value you did not allow.
 :::
-
-You now have the basics. Next, go to [what RAG is](lesson:rag/what-is-rag).

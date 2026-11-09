@@ -111,5 +111,3 @@ Because the log holds every event in order. The context is a selected, trimmed v
 :::check Compaction saves space. What does it cost?
 Detail. A summary leaves things out, so the full record should stay in the log in case you need it.
 :::
-
-Next: [everything is a plugin](lesson:harness/everything-is-a-plugin).

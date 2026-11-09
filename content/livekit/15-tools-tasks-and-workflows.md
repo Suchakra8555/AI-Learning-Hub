@@ -214,5 +214,3 @@ Four rounds: the first plus `max_tool_steps` (3) more. Then the framework makes 
 :::check You hand off from a triage agent to a billing agent, and billing asks for the order number again. Why?
 A new agent starts with an empty chat context. Pass `chat_ctx=self.chat_ctx.copy(exclude_instructions=True)` to carry the conversation, or put the order number in `userdata`.
 :::
-
-Next: [Nodes, hooks, RAG and fallbacks](lesson:livekit/nodes-hooks-rag-fallbacks)

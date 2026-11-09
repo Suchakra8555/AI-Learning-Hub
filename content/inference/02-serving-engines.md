@@ -42,5 +42,3 @@ All three engines are aimed at NVIDIA GPUs in practice. We did not verify this f
 :::check What does disaggregated serving separate, and why?
 It runs the prefill phase and the decode phase on different GPU pools, because they stress hardware differently and can then be scaled on their own.
 :::
-
-Next: [running a model on your laptop](lesson:inference/laptop-gguf-quantization).

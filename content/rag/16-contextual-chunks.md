@@ -67,5 +67,3 @@ For tables and images, a cheaper trick needs no model at all. Attach the paragra
 :::check Why add the context note before indexing and not at question time?
 Search compares the question to what is stored. If the stored text lacks the company name, the match fails before the model ever sees it.
 :::
-
-Next: [more ways to chunk](lesson:rag/more-ways-to-chunk).
