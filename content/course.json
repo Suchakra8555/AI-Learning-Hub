@@ -1,7 +1,7 @@
 {
   "siteName": "AI Engineering, in plain words",
   "headline": "Learn to build AI systems that still work when real people use them.",
-  "tagline": "A hands-on course for engineers and new graduates. Start with how a model works, then prompt engineering, build RAG from a 50-line script to a service, then learn agents, LangChain, evals, deployment, voice, fine-tuning and model serving. Every hard word is explained.",
+  "tagline": "A hands-on course for engineers and new graduates. Start with how a model works, then prompt engineering, build RAG from a 50-line script to a service, then learn agents, LangChain, evals, deployment, voice, fine-tuning, MLflow, Kubeflow and model serving. Every hard word is explained.",
   "repoUrlBase": "",
   "howTo": [
     {
@@ -134,6 +134,18 @@
       "title": "LLMOps and fine-tuning",
       "status": "ready",
       "blurb": "When to prompt, retrieve, or fine-tune. Training data, SFT, LoRA, DPO, tracking runs, scoring answers, and watching a live system."
+    },
+    {
+      "id": "mlflow",
+      "title": "MLflow",
+      "status": "ready",
+      "blurb": "Track runs, save models with their schema, register versions with aliases, serve over HTTP, trace and evaluate LLM apps, version prompts, and run a shared server safely. MLflow 3.18, eight lessons, most of them run."
+    },
+    {
+      "id": "kubeflow",
+      "title": "Kubeflow",
+      "status": "ready",
+      "blurb": "What Kubeflow is in 2026 (and what is deprecated), a KFP pipeline run with no cluster, standalone Pipelines on kind and where it failed for us, Trainer, tuning, KServe and the two MLflow bridges. Five lessons, with honest notes on what was not run."
     },
     {
       "id": "inference",

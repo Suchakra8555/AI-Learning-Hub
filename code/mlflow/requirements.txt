@@ -1,0 +1,4 @@
+# Versions the MLflow track was run with (Python 3.10+).
+mlflow==3.18.0
+scikit-learn
+pandas

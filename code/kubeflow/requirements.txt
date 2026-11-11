@@ -1,0 +1,4 @@
+# Versions the Kubeflow track was run with (Python 3.10+).
+kfp==2.18.0
+scikit-learn
+pandas

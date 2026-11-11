@@ -7,3 +7,14 @@ node_modules/
 .env
 code/llmops/train.jsonl
 code/llmops/holdout.jsonl
+
+.vercel
+.env*
+
+# MLflow and Kubeflow lab output
+code/mlflow/mlflow.db
+code/mlflow/mlruns/
+code/mlflow/mlartifacts/
+code/mlflow/notes.txt
+code/kubeflow/local_outputs/
+code/kubeflow/wine_pipeline.yaml

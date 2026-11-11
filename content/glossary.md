@@ -230,3 +230,15 @@ summary: Every hard word in the course, said simply. If a word is missing, add i
 **ReAct**: A prompt pattern where the model alternates thoughts, tool actions and observations. See [ReAct](lesson:prompting/react).
 **Self-consistency**: Sampling several reasoning chains and keeping the answer most of them agree on. See [self-consistency](lesson:prompting/self-consistency).
 **Tree of thought**: Reasoning that tries several branches, scores them and drops weak ones. See [tree of thought](lesson:prompting/tree-of-thought).
+**Run (MLflow)**: One recorded training or evaluation: its parameters, metrics, tags and files. See [tracking runs](lesson:mlflow/tracking-runs-and-search).
+**Experiment (MLflow)**: A named group of runs, such as `wine-forest`.
+**Artifact**: A file a run or pipeline step produces: a model, a plot, a dataset.
+**Signature (MLflow)**: The input and output schema saved with a model. It makes a wrong column fail at predict time. See [models](lesson:mlflow/models-and-signatures).
+**Flavor (MLflow)**: A way to load a saved model, such as `sklearn` or the generic `python_function`.
+**Span**: One step inside a trace, with its input, output and timing. See [tracing](lesson:mlflow/tracing-an-llm-app).
+**Scorer (MLflow)**: A check that returns a value for one app output; a Python function or an LLM judge. See [evaluation](lesson:mlflow/evaluation-and-prompts).
+**Kubernetes**: A system that schedules containers across machines. Kubeflow runs ML work on it.
+**Component (KFP)**: One pipeline step: a Python function that runs in its own container. See [your first pipeline](lesson:kubeflow/your-first-pipeline).
+**kind**: A tool that runs a small Kubernetes cluster as Docker containers, for local testing.
+**TrainJob**: Kubeflow Trainer's object for one distributed training run. See [training and tuning](lesson:kubeflow/training-and-tuning).
+**InferenceService**: KServe's Kubernetes object that turns a saved model into a web service. See [KServe](lesson:kubeflow/serving-and-mlflow-bridges).
