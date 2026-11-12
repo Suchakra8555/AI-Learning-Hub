@@ -30,7 +30,7 @@ def make_prompts(n=50):
 
 
 def serve(prompts, use_cache):
-    tree, computed, reused, nodes = {}, 0, 0, 0
+    tree, computed, reused = {}, 0, 0
     for p in prompts:
         node, i = tree, 0
         while use_cache and i < len(p) and p[i] in node:  # walk down while the prefix matches
@@ -40,14 +40,12 @@ def serve(prompts, use_cache):
         for tok in p[i:]:  # remember the new part for next time
             node[tok] = {}
             node = node[tok]
-            nodes += 1
-    return computed, reused, nodes
+    return computed, reused
 
 
 prompts = make_prompts()
 total = sum(len(p) for p in prompts)
 print(f"{len(prompts)} prompts, {total} prompt tokens, system prompt {len(SYSTEM)} tokens")
 for name, use in [("no cache", False), ("prefix tree", True)]:
-    computed, reused, nodes = serve(prompts, use)
-    extra = f"  tree nodes {nodes}" if use else ""
-    print(f"{name:11}  computed {computed:5}  reused {reused:5} ({reused / total:.0%}){extra}")
+    computed, reused = serve(prompts, use)
+    print(f"{name:11}  computed {computed:5}  reused {reused:5} ({reused / total:.0%})")
