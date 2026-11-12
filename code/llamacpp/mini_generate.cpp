@@ -1,7 +1,7 @@
 // mini_generate.cpp: the smallest useful program on top of libllama.
 //
 // It loads a GGUF model, shows the 5 most likely first tokens (raw logits),
-// then generates text with a sampler chain and prints speed numbers.
+// then generates text with a sampler chain and prints its speed and KV cache use.
 // It uses the new batch API (llama_batch_ext + llama_process), the same one
 // examples/simple/simple.cpp uses at llama.cpp commit 0fb8f15.
 //
@@ -45,6 +45,7 @@ int main(int argc, char ** argv) {
     // 2. The model: weights + vocab, memory-mapped from the GGUF file.
     llama_model_params mp = llama_model_default_params();
     mp.n_gpu_layers = 99;  // ignored on a CPU-only build
+    mp.progress_callback = [](float, void *) { return true; };  // no loading dots
     llama_model * model = llama_model_load_from_file(path, mp);
     if (!model) { fprintf(stderr, "could not load %s\n", path); return 1; }
     const llama_vocab * vocab = llama_model_get_vocab(model);
@@ -114,10 +115,10 @@ int main(int argc, char ** argv) {
     printf("\n\n%d tokens in %.3fs = %.0f tok/s\n", n_out, s, n_out / s);
 
     // 9. How much of the KV cache sequence 0 now holds.
+    // n_ctx is the value we asked for, rounded up to a multiple of 256.
     printf("KV cache: sequence 0 holds positions 0..%d of n_ctx %u\n",
            llama_memory_seq_pos_max(llama_get_memory(ctx), 0), llama_n_ctx(ctx));
 
-    llama_perf_context_print(ctx);
     llama_batch_ext_free(batch);
     llama_sampler_free(smpl);
     llama_free(ctx);

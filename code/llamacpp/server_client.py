@@ -57,12 +57,14 @@ if __name__ == "__main__":
     print()
 
     # The grammar engine forces the output to match a JSON schema, even from a model this small.
+    # With a real chat model, send the same schema to /v1/chat/completions as
+    #   "response_format": {"type": "json_schema", "json_schema": {"schema": schema}}
+    # Our tiny model has no chat template, and that path failed for it (see the server lesson),
+    # so we use the native /completion endpoint, which takes "json_schema" and no template.
     schema = {"type": "object", "properties": {"answer": {"type": "string", "maxLength": 20}, "sure": {"type": "boolean"}},
               "required": ["answer", "sure"]}
-    r = call("/v1/chat/completions", {"messages": msgs, "max_tokens": 64, "temperature": 0,
-                                      "response_format": {"type": "json_schema", "json_schema": {"schema": schema}}})
-    out = r["choices"][0]["message"]["content"]
-    print("\n4. json_schema:", out, "->", "valid JSON" if json.loads(out) else "")
+    r = call("/completion", {"prompt": "The KV cache", "n_predict": 64, "temperature": 0, "json_schema": schema})
+    print("\n4. json_schema:", r["content"], "->", json.loads(r["content"]))
 
     toks = call("/tokenize", {"content": "llama.cpp runs GGUF models"})["tokens"]
     print("\n5. tokenize:", toks)

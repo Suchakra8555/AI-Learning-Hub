@@ -1,6 +1,6 @@
 ---
 title: Your own program on libllama
-summary: Write, build and run a 120-line C++ program that loads a GGUF model, peeks at raw logits, samples with a chain, and reads back the KV cache state. Then see where to go from there - bindings, multiple sequences, and embedding llama.cpp in an app.
+summary: Write, build and run a 130-line C++ program that loads a GGUF model, peeks at raw logits, samples with a chain, and reads back the KV cache state. Then see where to go from there - bindings, multiple sequences, and embedding llama.cpp in an app.
 time: 25 min
 ---
 
@@ -8,7 +8,7 @@ The tools are thin layers over `libllama`. When you need something they do not d
 
 ## The program
 
-`code/llamacpp/mini_generate.cpp` is about 120 lines. It does eight things, in this order. Each matches a step in [inside libllama](lesson:llamacpp/inside-libllama).
+`code/llamacpp/mini_generate.cpp` is about 130 lines. It does eight things, in this order. Each matches a step in [inside libllama](lesson:llamacpp/inside-libllama).
 
 | Step | Calls |
 |---|---|
@@ -67,15 +67,25 @@ g++ -std=c++17 -O2 code/llamacpp/mini_generate.cpp \
 
 Our output:
 
-OUTPUT_MINI
+```text
+model: llama ?B Q8_0, 4.0M params, vocab 2000
+prompt tokens: 1='<s>' 340=' The' 748=' K' 1959='V' 1772=' cache'
+top 5 next tokens: ','(9.02) '.'(8.50) ' us'(7.95) ' and'(7.84) ' fin'(7.39)
+
+The KV cache | | Engine | | `llama_batch_timeout`, `src/llama-arch.cpp`, `llama-llama-sampling`, `llama-bench`, `
+
+40 tokens in 0.014s = 2768 tok/s
+KV cache: sequence 0 holds positions 0..44 of n_ctx 256
+```
 
 Read the output as a checklist:
 
-- **`prompt tokens`** shows the tokenizer at work. Token 1 is `<s>`, the BOS (beginning of sequence) token, added because we passed `add_special = true`. The `▁` in pieces is SentencePiece's mark for a space.
-- **`top 5 next tokens`** are the raw logits before any sampler. A real model's top 5 would be sensible continuations; ours are what a 7M-parameter model trained for 9 minutes believes.
-- **The text** is nonsense in the style of this course. That is the model, not the code.
-- **`KV cache: ... positions 0..N`** confirms the cache holds every prompt and generated token except the last one sampled, which was never fed back.
-- **The perf lines** come from `llama_perf_context_print`: prompt eval is the prefill, eval is the per-token loop.
+- **`model`**: `?B` because llama.cpp names model sizes from a table of known layer counts, and a 4-layer, 4M-parameter model is in none of them.
+- **`prompt tokens`** shows the tokenizer at work. Token 1 is `<s>`, the BOS (beginning of sequence) token, added because we passed `add_special = true`. `KV` became two tokens, `' K'` and `'V'`. The leading space in `' The'` is SentencePiece's habit of marking word starts.
+- **`top 5 next tokens`** are the raw logits before any sampler. A comma or a full stop after "The KV cache" is a reasonable guess, even from this model.
+- **The text** is made of real pieces of this course (file paths, tool names, table pipes) put together without sense. That is a 4M-parameter model trained for 10 minutes, not a bug in the code.
+- **Speed** is huge because the model is tiny. A real 8B model on the same CPU would be roughly a thousand times slower per token.
+- **`KV cache: ... positions 0..44`**: 5 prompt tokens plus 40 generated, every one of them fed back. `n_ctx` was 45 and was rounded up to 256, the padding rule from [inside libllama](lesson:llamacpp/inside-libllama).
 
 ## Things to try next
 

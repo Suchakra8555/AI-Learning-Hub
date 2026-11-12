@@ -9,7 +9,7 @@ Install (CPU is fine):
 Run from the repo root:
     python code/llamacpp/train_tiny_llama.py --out tiny-llama --steps 1500
 
-It takes about 9 minutes on 4 CPU cores. The model is 7.4M parameters, so it writes
+It took 586 seconds (about 10 minutes) on 4 CPU cores. The model has 4.0M parameters, so it writes
 lesson-flavoured English that does not make sense. That is expected: we are testing the
 plumbing, not the model.
 

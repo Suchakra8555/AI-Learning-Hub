@@ -1,6 +1,6 @@
 ---
 title: ggml, the engine room - tensors, graphs, backends
-summary: How ggml stores numbers, why defining a computation does no math, how one graph is split between GPU and CPU, and how a quantized matrix multiply actually runs. With a 90-line C program you can build.
+summary: How ggml stores numbers, why defining a computation does no math, how one graph is split between GPU and CPU, and how a quantized matrix multiply actually runs. With a 80-line C program you can build.
 time: 30 min
 ---
 

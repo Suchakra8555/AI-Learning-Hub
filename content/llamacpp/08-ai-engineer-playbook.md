@@ -6,7 +6,7 @@ time: 30 min
 
 You can run a model and call it over HTTP. Now you want to build things: a RAG service with no cloud calls, an extractor that always returns valid JSON, an agent with tools, a fine-tuned model in production. Each section below is one recipe, with the flags from llama.cpp's docs at commit `0fb8f15`.
 
-We ran the recipes we could on our CPU machine with the tiny course model: structured output, slots, tokenize, metrics, embeddings. The ones that need a real downloaded model (tools, images, reranking, draft models) are taken from the docs, and marked.
+We ran the recipes we could on our CPU machine with the tiny course model: embeddings, structured output, slots, tokenize, metrics and prompt caching. The ones that need a real downloaded model (tools, images, reranking, draft models) are taken from the docs, and marked.
 
 ## 1. Point your existing code at it
 
@@ -44,6 +44,8 @@ Then from your code:
 
 `--pooling` decides how per-token vectors become one vector per text: `mean`, `cls` (the first token's), `last`, or `none` (one vector per token). Use what the embedding model was trained with; it is usually in its metadata, so leaving the flag out is often right.
 
+We tried the embeddings endpoint with our tiny model (`--embeddings --pooling mean`), which is a text generator, not an embedding model. Three sentences gave three vectors of 256 numbers, and the cosine similarity between "How long do I have to return a tent?" and "Tents can be returned within 30 days." was 0.741, against 0.624 for "The GPU runs the matmul." The plumbing works; for real retrieval use a model trained for embeddings.
+
 This replaces the paid embedding API in the [RAG track's embeddings lesson](lesson:rag/embeddings-and-vectors). Remember to embed the questions with the same model as the documents.
 
 ## 3. JSON that always parses
@@ -58,13 +60,15 @@ Three ways in, from `grammars/README.md`:
 | Native `/completion` | `"json_schema": {...}` or a raw `"grammar": "..."` in GBNF |
 | CLI | `-j '{"type":"object",...}'` or `--grammar-file grammars/json.gbnf` |
 
-We tested it with our tiny 7M-parameter model, which writes nonsense. With a schema it still returned this:
+We tested it with our tiny 4M-parameter model, which writes nonsense. Sent to `/completion` with a two-field schema, it returned:
 
 ```text
-{"answer": "wo", "sure": false}
+{ "answer": "", "sure": true}
 ```
 
 Valid JSON, matching the schema, from a model that cannot write a sentence. That is the grammar doing the work, not the model. With a real model you get valid *and* sensible output.
+
+The same schema sent as `response_format` to `/v1/chat/completions` failed on our model, because it has no chat template (details in [the server lesson](lesson:llamacpp/llama-server)). With a proper chat model, use `response_format`.
 
 Two warnings from the docs. The schema limits the output but **is not shown to the model**, so also describe the format in your prompt. And not every JSON Schema feature converts to a grammar; test yours.
 
@@ -173,7 +177,7 @@ Use `:server-cuda`, `:server-rocm`, `:server-vulkan` or `:server-intel` for GPUs
 - [ ] `--metrics` on and scraped by Prometheus. `GET /health` for the load balancer (it needs no key).
 - [ ] An eval set run against the quantized model, not just the original. See [benchmark and tune](lesson:llamacpp/benchmark-and-tune).
 - [ ] Load-tested at your expected concurrency with `llama-batched-bench` or real traffic, watching time to first token.
-- [ ] `--slots` endpoint (on by default) is not exposed publicly; it shows prompt text. Turn it off with `--no-slots` if you cannot block it.
+- [ ] `/slots` and `/props` are not reachable by the public; they show sampling settings, token counts, the model path and the chat template. Turn `/slots` off with `--no-slots` if you cannot block it.
 
 :::check You need valid JSON from a small local model for a data-extraction job. What do you do?
 Send a JSON schema in `response_format` (or `json_schema`). The grammar sampler makes invalid JSON impossible. Also describe the fields in the prompt, because the schema itself is not shown to the model.

@@ -24,7 +24,7 @@ done
 ls -l "$NAME"-*.gguf
 
 echo "== 3. inspect: what is inside the file"
-$PY "$(dirname "$0")/gguf_peek.py" "$NAME-Q8_0.gguf" | head -30
+$PY "$(dirname "$0")/gguf_peek.py" "$NAME-Q4_0.gguf"
 
 echo "== 4. run: greedy completion, no chat template"
 "$BIN/llama-completion" -m "$NAME-Q8_0.gguf" -p "The KV cache" -n 30 --temp 0 -no-cnv 2>/dev/null

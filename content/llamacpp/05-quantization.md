@@ -138,9 +138,42 @@ llama-quantize model-F16.gguf model-Q4_K_M.gguf Q4_K_M
 
 Always quantize from F16, BF16 or F32. Re-quantizing an already quantized file needs `--allow-requantize` and the tool warns it "can severely reduce quality". Other flags you may need: `--dry-run` (just print the final size), `--output-tensor-type` and `--token-embedding-type` (keep these two bigger), and `--tensor-type attn_q=q8_0` (override one tensor kind).
 
-Our run on the tiny course model (7.4M parameters, from [lesson 4](lesson:llamacpp/train-convert-run)):
+Our run on the tiny course model (4.0M parameters, from [lesson 4](lesson:llamacpp/train-convert-run)):
 
-OUTPUT_QUANT
+```bash
+llama-quantize tiny-llama-F16.gguf tiny-llama-Q4_K_M.gguf Q4_K_M
+```
+
+The log shows the recipe deciding per tensor (trimmed to the `attn_v` and `ffn_down` lines):
+
+```text
+warning: blk.0.ffn_down.weight - ncols 704 not divisible by 256 (required for type q4_K) -> falling back to q5_0
+warning: blk.1.ffn_down.weight - ncols 704 not divisible by 256 (required for type q4_K) -> falling back to q5_0
+warning: blk.2.ffn_down.weight - ncols 704 not divisible by 256 (required for type q6_K) -> falling back to q8_0
+warning: blk.3.ffn_down.weight - ncols 704 not divisible by 256 (required for type q6_K) -> falling back to q8_0
+[ 8/ 39] blk.0.attn_v.weight - [ 256, 128, 1, 1], type = f16, converting to q4_K
+[17/ 39] blk.1.attn_v.weight - [ 256, 128, 1, 1], type = f16, converting to q4_K
+[26/ 39] blk.2.attn_v.weight - [ 256, 128, 1, 1], type = f16, converting to q6_K
+[35/ 39] blk.3.attn_v.weight - [ 256, 128, 1, 1], type = f16, converting to q6_K
+llama_model_quantize_impl: model size = 7.59 MiB (16.01 BPW)
+llama_model_quantize_impl: quant size = 2.50 MiB (5.27 BPW)
+```
+
+Two things to see:
+
+- **`use_more_bits` at work.** With 4 layers, it picks layers 2 and 3 (`i >= 7*4/8` gives layer 3; `(i - 0) % 3 == 2` gives layer 2). Those `attn_v` weights got Q6_K, the others Q4_K.
+- **Fallbacks.** K-quant super-blocks hold 256 weights, so a row length must divide by 256. Our feed-forward size is 704, which does not, so the `ffn_down` weights fell back to Q5_0 and Q8_0. Real models choose sizes that divide evenly. If you design or prune a model, keep that in mind.
+
+Then we measured all four files with `llama-perplexity` on the training text (50 chunks of 128 tokens). Lower is better:
+
+| File | Size | Bits per weight | Perplexity |
+|---|---|---|---|
+| F16 | 7.59 MiB | 16.01 | 48.07 ± 3.71 |
+| Q8_0 | 4.03 MiB | 8.51 | 48.08 ± 3.71 |
+| Q4_K_M | 2.50 MiB | 5.27 | 48.13 ± 3.70 |
+| Q4_0 | 2.27 MiB | 4.78 | 49.03 ± 3.77 |
+
+The same pattern as the Llama 3 table, on our own model: Q8_0 loses almost nothing, Q4_K_M loses a little, Q4_0 loses about 2%. Q4_K_M gets most of Q4_0's savings for 10% more file. The ± is the uncertainty of each score on its own; all four files read the same text, so the differences between them are more reliable than the ± suggests. KL divergence (below) is the sharper test. The bits per weight are higher than the block math says (4.78 for Q4_0, not 4.5) because the output layer is kept in Q6_K and the norms in F32, and in a model this small those are a big share.
 
 ## Importance matrix: spend the bits where they count
 

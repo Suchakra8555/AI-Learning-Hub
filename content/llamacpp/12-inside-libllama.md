@@ -171,7 +171,7 @@ A newer feature lets some samplers run on the backend inside the graph (`backend
 - Pass `-v` (log everything) or `-lv 5` (debug level) to any tool for detailed logs.
 - Run the unit tests for one area: `test-kv-cache`, `test-sampling`, `test-batch-alloc`, `test-llama-grammar`. We ran `test-sampling`, `test-gguf`, `test-rope` and `test-quantize-fns` on our build; all passed.
 
-[Your own program](lesson:llamacpp/your-own-program) puts all of these calls together in about 120 lines.
+[Your own program](lesson:llamacpp/your-own-program) puts all of these calls together in about 130 lines.
 
 :::check A user's chat has 3,900 tokens and the server's slot holds 4,096. What can the program do before the next turn?
 Free room in the KV cache: remove old turns with `llama_memory_seq_rm`, then slide the remaining positions down with `llama_memory_seq_add` so they stay contiguous (a context shift). Or summarize and start fresh. Otherwise decode will return 1, meaning no room.
