@@ -242,3 +242,10 @@ summary: Every hard word in the course, said simply. If a word is missing, add i
 **kind**: A tool that runs a small Kubernetes cluster as Docker containers, for local testing.
 **TrainJob**: Kubeflow Trainer's object for one distributed training run. See [training and tuning](lesson:kubeflow/training-and-tuning).
 **InferenceService**: KServe's Kubernetes object that turns a saved model into a web service. See [KServe](lesson:kubeflow/serving-and-mlflow-bridges).
+**PagedAttention**: vLLM's way of storing the KV cache in small fixed-size blocks that can sit anywhere in memory, tracked by a block table, so little memory is wasted. See [vLLM in depth](lesson:inference/vllm-in-depth).
+**Continuous batching**: Serving many requests together and letting a new one take the place of a finished one at every step, instead of waiting for the whole group. TensorRT-LLM calls it in-flight batching. See [batching and GPU memory](lesson:inference/batching-and-gpu-memory).
+**Chunked prefill**: Cutting a long prompt's prefill into smaller pieces and mixing them with other requests' decode work, so a long prompt does not stall everyone else.
+**Prefix caching**: Keeping the KV cache of text already processed, so a new request that starts with the same text skips that work.
+**RadixAttention**: SGLang's prefix cache. It keeps cached prompt starts in a tree, so shared starts are stored once. See [SGLang in depth](lesson:inference/sglang-in-depth).
+**Speculative decoding**: A cheap draft guesses several tokens and the big model checks them in one pass, keeping those that match. See [TensorRT-LLM in depth](lesson:inference/tensorrt-llm-in-depth).
+**Inter-token latency (ITL)**: The time between two tokens that arrive one after the other. See [benchmark honestly](lesson:inference/benchmark-honestly).

@@ -46,7 +46,7 @@ The docs call the lighter one "Standard"; we did not confirm that it was officia
 
 ## LLMs
 
-For language models KServe has a Hugging Face runtime that uses vLLM and speaks the OpenAI API. The docs example (`hf://Qwen/Qwen2.5-0.5B-Instruct`) asks for 1 GPU. A CPU image is picked when no GPU is requested, but running it on CPU is not shown as tested. See [serving engines](lesson:inference/serving-engines).
+For language models KServe has a Hugging Face runtime that uses vLLM and speaks the OpenAI API. The docs example (`hf://Qwen/Qwen2.5-0.5B-Instruct`) asks for 1 GPU. A CPU image is picked when no GPU is requested, but running it on CPU is not shown as tested. See [choosing an engine](lesson:inference/choosing-an-engine).
 
 ## The registry
 

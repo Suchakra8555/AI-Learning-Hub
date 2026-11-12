@@ -151,7 +151,7 @@
       "id": "inference",
       "title": "Inference and edge",
       "status": "ready",
-      "blurb": "What a model server does with your prompt: prefill, decode, KV cache, vLLM, SGLang, TensorRT-LLM, Dynamo, GGUF, and fair benchmarks."
+      "blurb": "What a model server does with your prompt: prefill, decode and the KV cache, then batching and GPU memory. Deep dives on vLLM, SGLang and TensorRT-LLM, with three runnable toy simulations. How to pick an engine, running a model on a laptop with GGUF, and fair benchmarks. Eight lessons, read from the projects' own docs, none of the engines run here."
     },
     {
       "id": "research",

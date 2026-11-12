@@ -39,7 +39,7 @@ No `npm install` is needed. To build static files without the server: `npm run b
 | LLMOps and fine-tuning | 5 | Prompt vs RAG vs fine-tune, training data, SFT, LoRA, DPO, MLflow, scoring, monitoring |
 | MLflow | 8 | MLflow 3.18: tracking, models and signatures, registry aliases, serving, a team server, tracing, evaluation, prompt registry |
 | Kubeflow | 5 | What Kubeflow is in 2026, a first KFP pipeline, Pipelines on kind (and where it failed), Trainer and tuning, KServe and the MLflow bridges |
-| Inference and edge | 4 | Prefill, decode, KV cache, vLLM, SGLang, TensorRT-LLM, Dynamo, GGUF, benchmarks |
+| Inference and edge | 8 | Prefill, decode, KV cache, batching and GPU memory, vLLM, SGLang and TensorRT-LLM in depth, choosing an engine, GGUF, benchmarks |
 | Dig deeper | 5 | Source notes for Awesome-RAG, ai-engineering-hub, LangChain, voice and LLMOps, RAGFlow |
 
 The RAG track and the Harness track are separate. The Harness track teaches the ideas with DeepSeek Harness as an example and does not build on top of it.
@@ -63,6 +63,9 @@ Code follows the [ponytail](https://github.com/DietrichGebert/ponytail) habit: t
 | `code/kubeflow/` | The wine pipeline, a local runner, a cluster submit script | Local run done in a Linux container; `cluster_run.py` not run |
 | `code/llmops/` | Dataset split and LoRA parameter math | Run |
 | `code/inference/kv_cache.py` | KV cache size formula | Run |
+| `code/inference/batching_sim.py` | Static vs continuous batching on 20 fake requests | Run, standard library only |
+| `code/inference/paged_kv.py` | Contiguous vs paged KV cache allocation | Run, standard library only |
+| `code/inference/radix_cache.py` | A prefix tree over 50 fake chat prompts | Run, standard library only |
 | `tools/docs_watcher.py` | Checks upstream LangChain pages our lessons cite and writes a diff report | Run, 37 pages |
 
 **Not tested, and the lessons say so:** any live model API call, the `sentence-transformers` snippet in the RAG track, LangChain and LangSmith examples (they need keys and accounts), late chunking, RAGFlow itself (read from its code, not run), a real carrier call over the PSTN (the LiveKit lab places SIP calls with a raw INVITE, not through a provider), LiveKit agents with paid model APIs, Kubernetes and VM deployments, multi-region LiveKit, the Voice in production platform itself (read from its code and incident notes; its scripts simulate the mechanics), vLLM, SGLang, TensorRT-LLM, Dynamo, llama.cpp, MLflow's LLM-judge scorers, AI Gateway, `optimize_prompts` and team-server setup, Kubeflow Pipelines on a cluster (the install ran, the API server never became ready), Trainer, tuning, KServe and Hub, and DeepSeek Harness itself. Those lessons are explained from official docs with links.
