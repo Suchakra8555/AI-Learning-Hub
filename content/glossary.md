@@ -242,3 +242,23 @@ summary: Every hard word in the course, said simply. If a word is missing, add i
 **kind**: A tool that runs a small Kubernetes cluster as Docker containers, for local testing.
 **TrainJob**: Kubeflow Trainer's object for one distributed training run. See [training and tuning](lesson:kubeflow/training-and-tuning).
 **InferenceService**: KServe's Kubernetes object that turns a saved model into a web service. See [KServe](lesson:kubeflow/serving-and-mlflow-bridges).
+**ggml**: The C tensor library under llama.cpp. It stores numbers, builds compute graphs, and runs them on CPUs and GPUs. See [ggml](lesson:llamacpp/ggml-tensors-graphs-backends).
+**Tensor**: A block of numbers with a shape, such as a 4096 x 4096 matrix. Model weights and activations are tensors.
+**Compute graph**: A list of operations and the tensors they connect, built first and run later. ggml runs one per batch.
+**Backend (ggml)**: The code that runs a compute graph on one kind of hardware: CPU, CUDA, Metal, Vulkan and others.
+**Offload (-ngl)**: Putting some or all of a model's layers on the GPU. `-ngl 20` puts 20 layers there; the rest run on the CPU.
+**K-quants**: llama.cpp's quantization types with super-blocks of 256 weights and their own scales, such as Q4_K and Q6_K. Names ending in _S, _M or _L are size mixes.
+**imatrix (importance matrix)**: Statistics from running sample text through a model, used to keep the most important weights more accurate when quantizing.
+**Perplexity**: A score of how surprised a model is by real text. Lower is better. Used to check that quantization did not hurt a model much.
+**mmap (memory mapping)**: Letting the operating system load a file's pages into memory only when they are read. llama.cpp loads GGUF weights this way.
+**ubatch (micro-batch)**: The piece of a batch that llama.cpp computes in one graph run. Set with `-ub`.
+**Slot (llama-server)**: One conversation's place in the server: its prompt, KV cache sequence and sampler. `-np 4` gives four slots.
+**Continuous batching**: Putting tokens from many conversations into one batch every step, so new requests join without waiting for others to finish.
+**Sampler chain**: The ordered list of steps that turns a model's scores into one chosen token, such as top-k, top-p, temperature, then a random draw.
+**Temperature**: A number that sharpens (below 1) or flattens (above 1) the model's choice. 0 means always take the top token.
+**Top-k, top-p, min-p**: Ways to drop unlikely tokens before choosing: keep the k best; keep the best until their chances add up to p; keep tokens at least p times as likely as the best one.
+**GBNF**: llama.cpp's grammar format. A grammar limits which tokens may come next, so output always matches a pattern such as valid JSON.
+**RoPE**: Rotary position embedding. Encodes a token's position by rotating its query and key vectors.
+**Flash attention**: A way to compute attention in one fused step without storing the full attention matrix. Faster and uses less memory.
+**Speculative decoding**: A small, fast draft model guesses several tokens and the big model checks them all at once. Same output, often faster.
+**SIMD**: CPU instructions that do the same math on many numbers at once, such as AVX2 on x86 and NEON on Arm.

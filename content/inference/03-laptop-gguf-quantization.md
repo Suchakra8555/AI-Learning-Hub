@@ -18,7 +18,7 @@ Big models need big memory. **Quantization** stores each weight with fewer bits,
 |---|---|
 | **Q4** | About 4 bits per weight |
 | **K** | The "k-quants" family. Hugging Face's table says Q4_K groups weights in super-blocks of 8 blocks of 32 and costs 4.5 bits per weight. |
-| **M** | A size variant. **We could not find M defined** in the pages we read. The k-quants pull request is the likely source ([PR](https://github.com/ggerganov/llama.cpp/pull/1684)). Check it before relying on a meaning. |
+| **M** | "Medium", a mix rule. Most weights get Q4_K, but some `attn_v` and `ffn_down` layers (the first and last eighth, and every third one between) get the bigger Q6_K. S and L are smaller and larger mixes. We read this in `src/llama-quant.cpp`; the [llama.cpp track](lesson:llamacpp/quantization) shows it. |
 
 ## A real size comparison
 
@@ -28,7 +28,7 @@ Quality drops a little with fewer bits. Measure on your own test set before ship
 
 ## Try it
 
-Download a small GGUF model, run `llama-server`, and call its OpenAI-style API from the `llm.py` style helper in the [first API call lesson](lesson:foundations/first-api-call). We did not run these steps here, so follow the llama.cpp README for current commands. No GPU is needed for a small model.
+Download a small GGUF model, run `llama-server`, and call its OpenAI-style API from the `llm.py` style helper in the [first API call lesson](lesson:foundations/first-api-call). No GPU is needed for a small model. The [llama.cpp track](lesson:llamacpp/what-llama-cpp-is) does all of this step by step, with commands we ran.
 
 :::check Why does a 4-bit model run where the 16-bit one will not?
 Each weight takes about a quarter of the memory, so the whole model is much smaller. In the README's example, 14.96 GiB becomes 4.58 GiB.
