@@ -1,0 +1,6 @@
+# Model files and build outputs made by the scripts in this folder
+*.gguf
+*.kld
+tiny-llama/
+mini_generate
+ggml_hello

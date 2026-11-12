@@ -1,7 +1,7 @@
 {
   "siteName": "AI Engineering, in plain words",
   "headline": "Learn to build AI systems that still work when real people use them.",
-  "tagline": "A hands-on course for engineers and new graduates. Start with how a model works, then prompt engineering, build RAG from a 50-line script to a service, then learn agents, LangChain, evals, deployment, voice, fine-tuning, MLflow, Kubeflow and model serving. Every hard word is explained.",
+  "tagline": "A hands-on course for engineers and new graduates. Start with how a model works, then prompt engineering, build RAG from a 50-line script to a service, then learn agents, LangChain, evals, deployment, voice, fine-tuning, MLflow, Kubeflow, model serving and llama.cpp. Every hard word is explained.",
   "repoUrlBase": "",
   "howTo": [
     {
@@ -152,6 +152,12 @@
       "title": "Inference and edge",
       "status": "ready",
       "blurb": "What a model server does with your prompt: prefill, decode, KV cache, vLLM, SGLang, TensorRT-LLM, Dynamo, GGUF, and fair benchmarks."
+    },
+    {
+      "id": "llamacpp",
+      "title": "llama.cpp, end to end",
+      "status": "ready",
+      "blurb": "Run models on your own hardware and understand the engine underneath. Clone and build, GGUF files, training a tiny model and taking it through convert, quantize, run and serve, sampling, llama-server, an AI engineer's playbook, benchmarks, then the internals: a map of the code, ggml tensors and backends, inside libllama, your own C++ program, and contributing. Fourteen lessons, built and run at a pinned commit."
     },
     {
       "id": "research",
