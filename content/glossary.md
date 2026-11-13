@@ -242,6 +242,27 @@ summary: Every hard word in the course, said simply. If a word is missing, add i
 **kind**: A tool that runs a small Kubernetes cluster as Docker containers, for local testing.
 **TrainJob**: Kubeflow Trainer's object for one distributed training run. See [training and tuning](lesson:kubeflow/training-and-tuning).
 **InferenceService**: KServe's Kubernetes object that turns a saved model into a web service. See [KServe](lesson:kubeflow/serving-and-mlflow-bridges).
+**PagedAttention**: vLLM's way of storing the KV cache in small fixed-size blocks that can sit anywhere in memory, tracked by a block table, so little memory is wasted. See [vLLM in depth](lesson:inference/vllm-in-depth).
+**Continuous batching**: Serving many requests together and letting a new one take the place of a finished one at every step, instead of waiting for the whole group. TensorRT-LLM calls it in-flight batching. See [batching and GPU memory](lesson:inference/batching-and-gpu-memory).
+**Chunked prefill**: Cutting a long prompt's prefill into smaller pieces and mixing them with other requests' decode work, so a long prompt does not stall everyone else.
+**Prefix caching**: Keeping the KV cache of text already processed, so a new request that starts with the same text skips that work.
+**RadixAttention**: SGLang's prefix cache. It keeps cached prompt starts in a tree, so shared starts are stored once. See [SGLang in depth](lesson:inference/sglang-in-depth).
+**Speculative decoding**: A cheap draft guesses several tokens and the big model checks them in one pass, keeping those that match. See [TensorRT-LLM in depth](lesson:inference/tensorrt-llm-in-depth).
+**Inter-token latency (ITL)**: The time between two tokens that arrive one after the other. See [benchmark honestly](lesson:inference/benchmark-honestly).
+**Dynamo**: NVIDIA's open-source layer that runs above engines such as vLLM, SGLang and TensorRT-LLM to route requests, split prefill from decode, scale workers and manage KV cache. See [what Dynamo is](lesson:dynamo/what-dynamo-is).
+**Disaggregated serving**: Running prefill and decode on separate GPU pools and moving the KV cache between them. The opposite is aggregated or colocated serving. See [disaggregated serving](lesson:dynamo/disaggregated-serving).
+**xPyD**: Dynamo's shorthand for x prefill workers and y decode workers.
+**KV-aware routing**: Choosing the worker for a request by how much of the prompt it already has cached, together with how busy it is. See [KV-aware routing](lesson:dynamo/kv-aware-routing).
+**KV event**: A note a worker publishes when it stores or drops KV cache blocks, so the router knows what each cache holds.
+**KVBM (KV block manager)**: Dynamo's manager for KV blocks across GPU, CPU memory, disk and remote storage. The docs mark it deprecated since v1.5.0. See [KV cache offloading](lesson:dynamo/kv-cache-offloading).
+**KV cache offloading**: Moving KV blocks to CPU memory, disk or remote storage instead of discarding them when the GPU is full.
+**NIXL**: A library that moves data between GPUs, CPU memory and storage, used by Dynamo to carry the KV cache from a prefill worker to a decode worker.
+**Dynamo planner**: The Dynamo part that changes how many prefill and decode workers run, to meet latency targets. See [planner and autoscaling](lesson:dynamo/planner-and-autoscaling).
+**SLA (latency target)**: A promised limit such as TTFT under 200 ms. The planner scales to meet it.
+**DGD (DynamoGraphDeployment)**: The Kubernetes resource that describes a whole Dynamo deployment: frontend and each worker role. See [deploying Dynamo](lesson:dynamo/deploying-dynamo).
+**Operator (Kubernetes)**: A program that watches custom resources and creates or changes pods to match them.
+**Gang scheduling**: Starting a group of pods all together or not at all, so a set that only works as a team never runs half-started.
+**Grove**: A Kubernetes API for gang scheduling and placing multi-pod inference systems. The Dynamo docs recommend it for multi-node deployments.
 **ggml**: The C tensor library under llama.cpp. It stores numbers, builds compute graphs, and runs them on CPUs and GPUs. See [ggml](lesson:llamacpp/ggml-tensors-graphs-backends).
 **Tensor**: A block of numbers with a shape, such as a 4096 x 4096 matrix. Model weights and activations are tensors.
 **Compute graph**: A list of operations and the tensors they connect, built first and run later. ggml runs one per batch.
@@ -253,14 +274,12 @@ summary: Every hard word in the course, said simply. If a word is missing, add i
 **mmap (memory mapping)**: Letting the operating system load a file's pages into memory only when they are read. llama.cpp loads GGUF weights this way.
 **ubatch (micro-batch)**: The piece of a batch that llama.cpp computes in one graph run. Set with `-ub`.
 **Slot (llama-server)**: One conversation's place in the server: its prompt, KV cache sequence and sampler. `-np 4` gives four slots.
-**Continuous batching**: Putting tokens from many conversations into one batch every step, so new requests join without waiting for others to finish.
 **Sampler chain**: The ordered list of steps that turns a model's scores into one chosen token, such as top-k, top-p, temperature, then a random draw.
 **Temperature**: A number that sharpens (below 1) or flattens (above 1) the model's choice. 0 means always take the top token.
 **Top-k, top-p, min-p**: Ways to drop unlikely tokens before choosing: keep the k best; keep the best until their chances add up to p; keep tokens at least p times as likely as the best one.
 **GBNF**: llama.cpp's grammar format. A grammar limits which tokens may come next, so output always matches a pattern such as valid JSON.
 **RoPE**: Rotary position embedding. Encodes a token's position by rotating its query and key vectors.
 **Flash attention**: A way to compute attention in one fused step without storing the full attention matrix. Faster and uses less memory.
-**Speculative decoding**: A small, fast draft model guesses several tokens and the big model checks them all at once. Same output, often faster.
 **SIMD**: CPU instructions that do the same math on many numbers at once, such as AVX2 on x86 and NEON on Arm.
 **Agent bridge**: In Dograh, a processor that connects the long-lived call worker to a child worker holding the LLM and TTS. See [how a call becomes a pipeline](lesson:pipecat/a-call-becomes-a-pipeline).
 **ARQ**: A Python job queue that uses Redis. Dograh runs post-call work, webhooks and campaign batches in it.
@@ -282,3 +301,20 @@ summary: Every hard word in the course, said simply. If a word is missing, add i
 **Transport (Pipecat)**: The object that moves audio in and out of a pipeline, such as WebRTC or a websocket. See [transports](lesson:pipecat/transports-and-phone-audio).
 **Transition speech**: Text or audio Dograh plays just before moving to the next node, to cover the model's thinking time.
 **Workflow (Dograh)**: What Dograh's API calls an agent: a directed graph of nodes and edges, saved as versions.
+**LLaMA-Factory**: An open-source tool that fine-tunes language models from one YAML file: SFT, DPO, KTO, LoRA, QLoRA, full fine-tuning, merging and serving. See [what LLaMA-Factory is](lesson:llamafactory/what-llama-factory-is).
+**LlamaBoard**: LLaMA-Factory's web form (`llamafactory-cli webui`). It writes a YAML and runs the same CLI.
+**Adapter**: The small set of extra weights LoRA trains. It is saved apart from the base model and can be merged into it.
+**Merge (adapter)**: Adding the adapter's weights into the base model, so you serve one normal model. Never merge onto a quantized base. See [merge and register](lesson:llamafactory/merge-register-and-version).
+**Chat template**: The exact text format a chat model was trained on, with markers for system, user and assistant. It can add a default system prompt you did not write. See [the anatomy of a config](lesson:llamafactory/anatomy-of-a-config).
+**Cutoff length**: The longest row, in tokens, before training cuts it.
+**Gradient accumulation**: Adding up the gradients of several small batches before one weight update, to get the effect of a bigger batch with the memory of a small one.
+**Effective batch size**: Rows behind each weight update: batch per device times accumulation steps times devices.
+**Warmup**: Starting the learning rate at zero and raising it over the first steps, so early updates are gentle.
+**KTO**: Preference training from single answers labelled good or bad, with no pairs needed.
+**Reward model**: A model trained to score answers, used by PPO-style training.
+**DeepSpeed ZeRO**: A way to split optimizer state, gradients and (at stage 3) weights across GPUs, so a model too big for one GPU can train. See [scaling up](lesson:llamafactory/qlora-full-and-scaling-up).
+**FSDP**: PyTorch's built-in way of splitting a model's weights across GPUs during training.
+**Base model revision**: The commit sha of a model on the Hugging Face Hub. The repo name alone is not a version, because new weights can be pushed under it.
+**Data digest**: A fingerprint of the training rows. The same bytes always give the same digest, so it works as the data's version.
+**Release gate**: An automatic check that stops a model from being promoted unless it passes a test. See [evaluate before you ship](lesson:llamafactory/evaluate-before-you-ship).
+**OpenAI-compatible API**: A server that accepts the same requests as OpenAI's `/v1/chat/completions`, so existing clients work with your own model.

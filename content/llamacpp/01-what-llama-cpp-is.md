@@ -26,7 +26,7 @@ It is built on **ggml**, a small tensor library by the same authors. A **tensor*
 | vLLM, SGLang | Many users at once on data-center GPUs | NVIDIA or AMD servers |
 | Ollama, LM Studio | A friendly app around a local model | Desktops |
 
-vLLM and SGLang are covered in [serving engines](lesson:inference/serving-engines). They squeeze more requests per second out of big GPUs. llama.cpp gives up some of that to run everywhere.
+vLLM and SGLang are covered in [choosing an engine](lesson:inference/choosing-an-engine). They squeeze more requests per second out of big GPUs. llama.cpp gives up some of that to run everywhere.
 
 Ollama and LM Studio are apps that bundle llama.cpp's engine (or parts of it) behind their own interface. If you learn llama.cpp, you understand what they do underneath, and you can use the newest features the day they land instead of waiting for a wrapper to catch up.
 

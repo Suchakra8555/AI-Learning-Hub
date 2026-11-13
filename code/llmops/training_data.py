@@ -20,7 +20,8 @@ def split(rows, holdout_share=0.2, seed=42):
 
 
 def write_jsonl(path, rows):
-    path.write_text("\n".join(json.dumps(r) for r in rows) + "\n", encoding="utf-8")
+    # bytes, not text: text mode writes \r\n on Windows, so the same rows would hash differently per OS
+    path.write_bytes(("\n".join(json.dumps(r) for r in rows) + "\n").encode("utf-8"))
 
 
 if __name__ == "__main__":

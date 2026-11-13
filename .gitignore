@@ -18,3 +18,13 @@ code/mlflow/mlartifacts/
 code/mlflow/notes.txt
 code/kubeflow/local_outputs/
 code/kubeflow/wine_pipeline.yaml
+
+# LLaMA-Factory lab: venv, upstream clone, generated data and run output
+code/llamafactory/.venv/
+code/llamafactory/vendor/
+code/llamafactory/data/
+code/llamafactory/saves/
+code/llamafactory/mlflow.db
+code/llamafactory/mlruns/
+code/llamafactory/mlartifacts/
+code/llamafactory/nori_pipeline.yaml
