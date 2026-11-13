@@ -130,6 +130,12 @@
       "blurb": "The case study that follows the LiveKit track: a real phone-agent platform and the engineering that keeps calls alive. Phone audio, carrier adapters, auth on sockets, async hot paths, events, retries, latency, privacy, testing, shipping, and a production checklist. Fourteen lessons."
     },
     {
+      "id": "pipecat",
+      "title": "Pipecat and Dograh",
+      "status": "ready",
+      "blurb": "Learn Pipecat coming from LiveKit, then read Dograh, an open-source voice agent platform built on a fork of it: the frame model, interruptions, turns, the graph that becomes tool calls, the visual builder and its live view, what the fork changed, and a study plan to your first pull request. Nineteen lessons, with runnable demos."
+    },
+    {
       "id": "llmops",
       "title": "LLMOps and fine-tuning",
       "status": "ready",

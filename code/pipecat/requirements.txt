@@ -1,0 +1,3 @@
+# Tested with Python 3.13 and pipecat-ai 1.16.0 (November 2026).
+# No API keys needed. Nothing here calls a model or a phone network.
+pipecat-ai==1.16.0

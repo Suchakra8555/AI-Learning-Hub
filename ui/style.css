@@ -219,6 +219,8 @@ figure svg .box { fill: var(--sunk); stroke: var(--line); stroke-width: 1.5; }
 figure svg .box.hot { fill: var(--accent-soft); stroke: var(--accent); }
 figure svg .arrow { stroke: var(--muted); stroke-width: 1.8; fill: none; }
 figure svg .small { fill: var(--muted); }
+figure svg .frame { fill: none; stroke: var(--line); stroke-width: 1.5; }
+figure svg .frame.hot { stroke: var(--accent); }
 figcaption { font-family: var(--font-ui); font-size: 0.88rem; color: var(--muted); margin-top: 0.75rem; max-width: 60ch; }
 
 .finish { margin: 3.5rem 0 1.5rem; }
