@@ -1,6 +1,6 @@
 # Learning map: Voice AI, LLMOps and fine-tuning, Inference and edge
 
-Date of research: 2026-11-03. Sources are official docs, original papers and standards. "Read" means the page was fetched and summarized by the fetch tool. Items marked UNVERIFIED were not confirmed in a fetched source.
+Date of research: 2026-11-03. Track C (C2, C3, C5) was read again on 2026-11-12, this time from the projects' GitHub sources. Sources are official docs, original papers and standards. "Read" means the page was fetched and summarized by the fetch tool. Items marked UNVERIFIED were not confirmed in a fetched source.
 
 Note on method: pages were read through a fetch tool that returns summaries. Quotes are short. Check the page before quoting it in a lesson.
 
@@ -349,31 +349,31 @@ Documented numbers (NVIDIA blog, read): Llama 2 7B, 4,096 tokens, batch size 1 n
 
 ## C2. vLLM
 
-**Plain explanation.** vLLM is an open source serving library from UC Berkeley's Sky Computing Lab. PagedAttention manages KV cache memory like pages in an operating system. Continuous batching adds new requests to a running batch. It supports quantization formats such as FP8, INT8, INT4, GPTQ and AWQ. The paper claims 2 to 4 times higher throughput at the same latency than FasterTransformer and Orca.
+**Plain explanation.** vLLM is an open source serving library, begun in UC Berkeley's Sky Computing Lab. PagedAttention keeps the KV cache in fixed-size blocks tracked by a block table. Its scheduler is token-budget-based (`max_num_batched_tokens`), with no separate prefill and decode phases. Chunked prefill is on by default in V1 "whenever possible", and decode requests are scheduled first. Preempted requests are recomputed, not swapped. Automatic prefix caching hashes each full block (its tokens plus its prefix) and evicts least-recently-used blocks. `vllm serve MODEL` starts an OpenAI-compatible server on port 8000. The README lists NVIDIA, AMD and Intel GPUs, several CPUs and plugin hardware.
 
-**Official URLs read.** https://docs.vllm.ai/en/latest/ ; https://arxiv.org/abs/2309.06180
+**Read on 2026-11-12, from the GitHub sources** (raw.githubusercontent.com works from our container, docs.vllm.ai does not): README.md; docs/design/prefix_caching.md; docs/design/arch_overview.md; docs/design/paged_attention.md (marked historical in its own header); docs/features/automatic_prefix_caching.md; docs/configuration/optimization.md (chunked prefill, preemption); docs/getting_started/quickstart.md (`vllm serve`); docs/serving/online_serving/README.md; docs/benchmarking/cli.md (TTFT, ITL, TPOT definitions); vllm/config/cache.py (`enable_prefix_caching: bool = True`). Paper abstract (2 to 4 times throughput claim) read in the first pass only: https://arxiv.org/abs/2309.06180
 
 **Dig deeper.**
-1. Read the docs home.
-2. Read the paper abstract.
-3. Read the `vllm bench` docs (linked, definitions not found).
+1. Read the prefix caching design page, including its worked example.
+2. Read the architecture overview, scheduler section.
+3. Read the optimization guide, chunked prefill and preemption.
 4. Read the paper fully.
 
-**Try it yourself.** Run `vllm serve` with a small model and send a request. UNVERIFIED: install steps and CPU support were not read. Plan on a GPU.
+**Try it yourself.** Run `vllm serve` with a small model and send a request. UNVERIFIED: install steps for your hardware, the default block size (the source we read leaves it to the setup), CPU-only behavior.
 
 ## C3. SGLang, TensorRT-LLM, NVIDIA Dynamo
 
-**Plain explanation.** SGLang is a serving framework hosted by LMSYS. It lists RadixAttention and prefix caching as core features. TensorRT-LLM is NVIDIA's project. Its docs list KV cache management, quantization, speculative decoding, LoRA adapters, disaggregated serving and in-flight batching. Dynamo is an open source datacenter inference stack that orchestrates engines. It runs prefill and decode in separate GPU pools that scale on their own. It routes requests by load and KV cache overlap. It supports vLLM, SGLang and TensorRT-LLM as backends. Its README cites a 2x faster time to first token in one benchmark. That is a project claim.
+**Plain explanation.** SGLang is hosted by LMSYS. RadixAttention keeps cached prompt prefixes in a radix tree whose nodes hold KV cache for runs of tokens. Eviction is LRU by default (`lfu`, `slru`, `priority` exist). `--schedule-policy` offers `lpm` (longest prefix match, per a source comment), `fcfs` (default) and others. The model gateway has a `cache_aware` policy. Structured output takes JSON schema, regex or EBNF, with XGrammar as the default backend. A Python frontend language exists. Its quickstart uses `sglang serve`. TensorRT-LLM is NVIDIA's library. As of the docs read, the TensorRT engine backend and `trtllm-build` are removed (release notes, 1.2 section; migration guide). PyTorch is the only backend and `trtllm-serve MODEL` loads a Hugging Face checkpoint directly. In-flight batching is its continuous batching. FP8 (H100 and later) and FP4 (B200) are documented. Speculative decoding: "A lightweight drafting mechanism proposes candidate tokens, and the target model verifies them in a single forward pass." NVIDIA Dynamo has its own notes in research/dynamo.md.
 
-**Official URLs read.** https://docs.sglang.io/ ; https://nvidia.github.io/TensorRT-LLM/ ; https://github.com/ai-dynamo/dynamo (the docs page at docs.nvidia.com/dynamo had only a title and version list)
+**Read on 2026-11-12, from the GitHub sources.** SGLang: README.md; docs/docs/get-started/quickstart.mdx; advanced_features/hicache_design.mdx (RadixAttention description), radix_eviction_policy.mdx, server_arguments.mdx, structured_outputs.mdx, sgl_model_gateway.mdx, speculative_decoding.mdx; references/frontend/frontend_tutorial.mdx; python/sglang/srt/managers/schedule_policy.py (LPM comment). TensorRT-LLM: README.md (release 1.4.0rc4); docs/source/overview.md, quick-start-guide.md, supported-hardware.md, release-notes.md, legacy/tensorrt-backend-removal.md, features/paged-attention-ifb-scheduler.md, features/quantization.md, features/speculative-decoding.md, commands/trtllm-serve/trtllm-serve.rst. Dynamo: see the separate Dynamo notes.
 
 **Dig deeper.**
-1. Read the Dynamo README.
-2. Read the SGLang docs home.
-3. Read the TensorRT-LLM docs home and its supported hardware page (not fetched).
-4. Read the SGLang and Dynamo papers or blogs (not located).
+1. Read the TensorRT-LLM backend removal migration guide.
+2. Read SGLang's `schedule_policy.py` for how `lpm` sorts the queue.
+3. Read the TensorRT-LLM kvcache.md feature page (downloaded, only skimmed).
+4. Read the SGLang paper (not reachable from our container).
 
-**Try it yourself.** Reading and diagramming only on a laptop. All three need NVIDIA GPUs in practice (UNVERIFIED for SGLang, which lists other hardware on its home page). Draw one diagram of prefill and decode pools from the Dynamo README.
+**Try it yourself.** Reading and diagramming on a laptop. SGLang and vLLM list non-NVIDIA hardware. TensorRT-LLM lists NVIDIA GPUs only.
 
 ## C4. llama.cpp, GGUF, Q4_K_M
 
@@ -391,9 +391,9 @@ Documented numbers (NVIDIA blog, read): Llama 2 7B, 4,096 tokens, batch size 1 n
 
 ## C5. Benchmarking (tokens per second, time to first token)
 
-**Plain explanation.** Two numbers matter. Time to first token (TTFT) shows how long the user waits before output starts. Tokens per second shows how fast the rest comes. llama-bench reports prompt processing (pp) and text generation (tg) as average tokens per second, with a standard deviation over repeated runs (default 5). It excludes tokenization and sampling time. vLLM's bench tool reports TTFT, TPOT and ITL by default, but the page read did not define them. Do not state definitions in a lesson until checked against a source.
+**Plain explanation.** Two numbers matter. Time to first token (TTFT) shows how long the user waits before output starts. Tokens per second shows how fast the rest comes. llama-bench reports prompt processing (pp) and text generation (tg) as average tokens per second, with a standard deviation over repeated runs (default 5). It excludes tokenization and sampling time. vLLM's benchmarking page (docs/benchmarking/cli.md, read 2026-11-12) defines them: TTFT is the time from sending a request to receiving its first streamed output; ITL records the time between consecutive streamed outputs; TPOT is (end-to-end latency minus TTFT) divided by (output tokens minus 1), calculated once per request. The page warns that metric names are not standardized across tools, and recommends GuideLLM for production benchmarking. AIPerf was not looked up.
 
-**Official URLs read.** https://github.com/ggml-org/llama.cpp/blob/master/tools/llama-bench/README.md ; https://docs.vllm.ai/en/latest/cli/bench/serve/
+**Official URLs read.** https://github.com/ggml-org/llama.cpp/blob/master/tools/llama-bench/README.md ; https://github.com/vllm-project/vllm/blob/main/docs/benchmarking/cli.md
 
 **Dig deeper.**
 1. Read the llama-bench README.
@@ -419,22 +419,7 @@ Documented numbers (NVIDIA blog, read): Llama 2 7B, 4,096 tokens, batch size 1 n
 
 ## Proposed lessons: Inference and edge
 
-1. **What happens when you press enter.** Prefill, decode, KV cache. Hand-compute cache size.
-   Sources: NVIDIA inference blog.
-2. **Why batching matters.** Static vs in-flight batching, memory limits.
-   Sources: NVIDIA blog, vLLM paper.
-3. **Serving engines compared.** vLLM, SGLang, TensorRT-LLM: what each lists as its core feature.
-   Sources: vLLM, SGLang, TensorRT-LLM docs.
-4. **Splitting prefill and decode.** Dynamo's idea and routing. Diagram it.
-   Sources: Dynamo README.
-5. **Running a model on your laptop.** llama.cpp, GGUF files, a local server.
-   Sources: llama.cpp README, Hugging Face GGUF page.
-6. **Reading a quantization name.** Bits per weight, Q4_K, size table. Mark where S, M, L is unsourced until checked.
-   Sources: HF GGUF table, quantize README, k-quants PR (verify).
-7. **Benchmark honestly.** pp and tg with llama-bench, repeats, variance. Define TTFT only after sourcing.
-   Sources: llama-bench README, vLLM bench docs.
-8. **ONNX for portable models.** Export, run, pick an execution provider.
-   Sources: ONNX Runtime docs.
+Built as eight lessons: 1 what happens when you press enter, 2 batching and GPU memory, 3 vLLM in depth, 4 SGLang in depth, 5 TensorRT-LLM in depth, 6 choosing an engine (sets up the Dynamo track), 7 laptop GGUF quantization, 8 benchmark honestly. ONNX (C6) is not yet a lesson.
 
 ---
 
@@ -444,10 +429,10 @@ Documented numbers (NVIDIA blog, read): Llama 2 7B, 4,096 tokens, batch size 1 n
 - LiveKit's own latency guidance, metrics definitions, and default endpointing delays. The pages read gave none.
 - Vapi "how it works" page (404). Vapi turn-taking and interruption settings.
 - LiveKit SIP trunk setup details, Silero VAD install steps, WebRTC demo tooling, any softphone guide.
-- The meaning of "M" in Q4_K_M. Hugging Face and the quantize README do not define it. The k-quants PR is the likely source but was not read.
-- Official definitions of TTFT, TPOT, ITL and output throughput. The vLLM pages read listed them without defining them.
-- NVIDIA Dynamo official docs content (docs.nvidia.com page was empty). Only the GitHub README summary was used. The "2x faster TTFT" is a project claim from the README, not tested.
-- SGLang prefill-decode disaggregation (the home page did not cover it). TensorRT-LLM hardware requirements.
+- The meaning of "M" in Q4_K_M: since resolved. The llama.cpp track read it in `src/llama-quant.cpp` (a size mix rule). See the llama.cpp quantization lesson.
+- Output throughput as a defined term. TTFT, ITL and TPOT are now sourced (vLLM benchmarking page). AIPerf was not looked up.
+- NVIDIA Dynamo: read from the GitHub docs tree (the parts the lessons use, not every page) on 2026-11-12. See the Dynamo notes for details and gaps.
+- Not run: vLLM, SGLang, TensorRT-LLM. No speed claim was tested. The vLLM paper abstract could not be re-read on 2026-11-12 (arxiv.org is blocked from our container). The default vLLM block size, the Triton Inference Server integration for TensorRT-LLM, the SGLang paper, and exactly which older TensorRT-LLM release dropped each engine-build feature were not checked. The SGLang docs page does not define `lpm`; the meaning comes from a source-code comment. The docs sites (docs.vllm.ai, docs.sglang.io, nvidia.github.io) time out from our container, so we read the same pages as source files on GitHub.
 - RAGAS context recall definition. RAGAS hallucination metric (not located; Opik lists "hallucination" as its own metric).
 - Whether Node Exporter runs on Windows, whether QLoRA or PEFT training runs on laptop CPU, and the PEFT helper for printing trainable parameters.
 - MLflow LLM evaluation and tracing features. Langfuse and Opik self-hosting steps. Any official guide on CI/CD gates for LLM apps.
