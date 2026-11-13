@@ -249,3 +249,17 @@ summary: Every hard word in the course, said simply. If a word is missing, add i
 **RadixAttention**: SGLang's prefix cache. It keeps cached prompt starts in a tree, so shared starts are stored once. See [SGLang in depth](lesson:inference/sglang-in-depth).
 **Speculative decoding**: A cheap draft guesses several tokens and the big model checks them in one pass, keeping those that match. See [TensorRT-LLM in depth](lesson:inference/tensorrt-llm-in-depth).
 **Inter-token latency (ITL)**: The time between two tokens that arrive one after the other. See [benchmark honestly](lesson:inference/benchmark-honestly).
+**Dynamo**: NVIDIA's open-source layer that runs above engines such as vLLM, SGLang and TensorRT-LLM to route requests, split prefill from decode, scale workers and manage KV cache. See [what Dynamo is](lesson:dynamo/what-dynamo-is).
+**Disaggregated serving**: Running prefill and decode on separate GPU pools and moving the KV cache between them. The opposite is aggregated or colocated serving. See [disaggregated serving](lesson:dynamo/disaggregated-serving).
+**xPyD**: Dynamo's shorthand for x prefill workers and y decode workers.
+**KV-aware routing**: Choosing the worker for a request by how much of the prompt it already has cached, together with how busy it is. See [KV-aware routing](lesson:dynamo/kv-aware-routing).
+**KV event**: A note a worker publishes when it stores or drops KV cache blocks, so the router knows what each cache holds.
+**KVBM (KV block manager)**: Dynamo's manager for KV blocks across GPU, CPU memory, disk and remote storage. The docs mark it deprecated since v1.5.0. See [KV cache offloading](lesson:dynamo/kv-cache-offloading).
+**KV cache offloading**: Moving KV blocks to CPU memory, disk or remote storage instead of discarding them when the GPU is full.
+**NIXL**: A library that moves data between GPUs, CPU memory and storage, used by Dynamo to carry the KV cache from a prefill worker to a decode worker.
+**Dynamo planner**: The Dynamo part that changes how many prefill and decode workers run, to meet latency targets. See [planner and autoscaling](lesson:dynamo/planner-and-autoscaling).
+**SLA (latency target)**: A promised limit such as TTFT under 200 ms. The planner scales to meet it.
+**DGD (DynamoGraphDeployment)**: The Kubernetes resource that describes a whole Dynamo deployment: frontend and each worker role. See [deploying Dynamo](lesson:dynamo/deploying-dynamo).
+**Operator (Kubernetes)**: A program that watches custom resources and creates or changes pods to match them.
+**Gang scheduling**: Starting a group of pods all together or not at all, so a set that only works as a team never runs half-started.
+**Grove**: A Kubernetes API for gang scheduling and placing multi-pod inference systems. The Dynamo docs recommend it for multi-node deployments.

@@ -2,7 +2,7 @@
 
 A hands-on course for engineers and new graduates who want to build AI systems that work with real users. Every hard word is explained where it first appears, and there is a glossary.
 
-It starts with how a model works, builds **RAG** (answering from your own documents) from a 50-line script to a production service, then covers agents, LangChain, testing, deployment, voice AI, self-hosted LiveKit (with a Docker lab), a case study of a production phone-agent platform, fine-tuning, and model serving.
+It starts with how a model works, builds **RAG** (answering from your own documents) from a 50-line script to a production service, then covers agents, LangChain, testing, deployment, voice AI, self-hosted LiveKit (with a Docker lab), a case study of a production phone-agent platform, fine-tuning, and model serving (vLLM, SGLang, TensorRT-LLM and NVIDIA Dynamo).
 
 ## Start learning
 
@@ -40,7 +40,8 @@ No `npm install` is needed. To build static files without the server: `npm run b
 | MLflow | 8 | MLflow 3.18: tracking, models and signatures, registry aliases, serving, a team server, tracing, evaluation, prompt registry |
 | Kubeflow | 5 | What Kubeflow is in 2026, a first KFP pipeline, Pipelines on kind (and where it failed), Trainer and tuning, KServe and the MLflow bridges |
 | Inference and edge | 8 | Prefill, decode, KV cache, batching and GPU memory, vLLM, SGLang and TensorRT-LLM in depth, choosing an engine, GGUF, benchmarks |
-| Dig deeper | 5 | Source notes for Awesome-RAG, ai-engineering-hub, LangChain, voice and LLMOps, RAGFlow |
+| NVIDIA Dynamo | 7 | What it adds above an engine, its parts, splitting prefill from decode, KV-aware routing, KV cache offloading, the planner, deploying on Kubernetes |
+| Dig deeper | 6 | Source notes for Awesome-RAG, ai-engineering-hub, LangChain, voice and LLMOps, RAGFlow, Dynamo |
 
 The RAG track and the Harness track are separate. The Harness track teaches the ideas with DeepSeek Harness as an example and does not build on top of it.
 
@@ -66,6 +67,8 @@ Code follows the [ponytail](https://github.com/DietrichGebert/ponytail) habit: t
 | `code/inference/batching_sim.py` | Static vs continuous batching on 20 fake requests | Run, standard library only |
 | `code/inference/paged_kv.py` | Contiguous vs paged KV cache allocation | Run, standard library only |
 | `code/inference/radix_cache.py` | A prefix tree over 50 fake chat prompts | Run, standard library only |
+| `code/dynamo/kv_router.py` | Round-robin vs cache-overlap routing over 3 fake workers and 200 requests | Run, standard library only |
+| `code/dynamo/disagg_sim.py` | A toy timing model of colocated vs split prefill and decode pools (not a benchmark) | Run, standard library only |
 | `tools/docs_watcher.py` | Checks upstream LangChain pages our lessons cite and writes a diff report | Run, 37 pages |
 
 **Not tested, and the lessons say so:** any live model API call, the `sentence-transformers` snippet in the RAG track, LangChain and LangSmith examples (they need keys and accounts), late chunking, RAGFlow itself (read from its code, not run), a real carrier call over the PSTN (the LiveKit lab places SIP calls with a raw INVITE, not through a provider), LiveKit agents with paid model APIs, Kubernetes and VM deployments, multi-region LiveKit, the Voice in production platform itself (read from its code and incident notes; its scripts simulate the mechanics), vLLM, SGLang, TensorRT-LLM, Dynamo, llama.cpp, MLflow's LLM-judge scorers, AI Gateway, `optimize_prompts` and team-server setup, Kubeflow Pipelines on a cluster (the install ran, the API server never became ready), Trainer, tuning, KServe and Hub, and DeepSeek Harness itself. Those lessons are explained from official docs with links.

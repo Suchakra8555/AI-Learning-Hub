@@ -95,7 +95,7 @@ Say you run three copies, each on four GPUs. A plain load balancer sends each re
 
 SGLang's gateway, mentioned in the [SGLang lesson](lesson:inference/sglang-in-depth), is one answer for SGLang servers. A more general layer is the idea behind NVIDIA Dynamo. Per its README, Dynamo is an open-source inference stack that works above vLLM, SGLang or TensorRT-LLM and can run prefill and decode in separate GPU pools and route by KV cache overlap ([README](https://github.com/ai-dynamo/dynamo)). The README cites a 2x faster time to first token in one benchmark. That is the project's own claim, not something we tested.
 
-The Dynamo track covers that next.
+The [Dynamo track](lesson:dynamo/what-dynamo-is) covers that next.
 
 :::check You run three copies of one engine behind a round-robin balancer. Name one thing that gets worse.
 Cache reuse. A request with a shared prefix may land on a copy that has not cached it, so the work is repeated.
