@@ -263,3 +263,38 @@ summary: Every hard word in the course, said simply. If a word is missing, add i
 **Operator (Kubernetes)**: A program that watches custom resources and creates or changes pods to match them.
 **Gang scheduling**: Starting a group of pods all together or not at all, so a set that only works as a team never runs half-started.
 **Grove**: A Kubernetes API for gang scheduling and placing multi-pod inference systems. The Dynamo docs recommend it for multi-node deployments.
+**ggml**: The C tensor library under llama.cpp. It stores numbers, builds compute graphs, and runs them on CPUs and GPUs. See [ggml](lesson:llamacpp/ggml-tensors-graphs-backends).
+**Tensor**: A block of numbers with a shape, such as a 4096 x 4096 matrix. Model weights and activations are tensors.
+**Compute graph**: A list of operations and the tensors they connect, built first and run later. ggml runs one per batch.
+**Backend (ggml)**: The code that runs a compute graph on one kind of hardware: CPU, CUDA, Metal, Vulkan and others.
+**Offload (-ngl)**: Putting some or all of a model's layers on the GPU. `-ngl 20` puts 20 layers there; the rest run on the CPU.
+**K-quants**: llama.cpp's quantization types with super-blocks of 256 weights and their own scales, such as Q4_K and Q6_K. Names ending in _S, _M or _L are size mixes.
+**imatrix (importance matrix)**: Statistics from running sample text through a model, used to keep the most important weights more accurate when quantizing.
+**Perplexity**: A score of how surprised a model is by real text. Lower is better. Used to check that quantization did not hurt a model much.
+**mmap (memory mapping)**: Letting the operating system load a file's pages into memory only when they are read. llama.cpp loads GGUF weights this way.
+**ubatch (micro-batch)**: The piece of a batch that llama.cpp computes in one graph run. Set with `-ub`.
+**Slot (llama-server)**: One conversation's place in the server: its prompt, KV cache sequence and sampler. `-np 4` gives four slots.
+**Sampler chain**: The ordered list of steps that turns a model's scores into one chosen token, such as top-k, top-p, temperature, then a random draw.
+**Temperature**: A number that sharpens (below 1) or flattens (above 1) the model's choice. 0 means always take the top token.
+**Top-k, top-p, min-p**: Ways to drop unlikely tokens before choosing: keep the k best; keep the best until their chances add up to p; keep tokens at least p times as likely as the best one.
+**GBNF**: llama.cpp's grammar format. A grammar limits which tokens may come next, so output always matches a pattern such as valid JSON.
+**RoPE**: Rotary position embedding. Encodes a token's position by rotating its query and key vectors.
+**Flash attention**: A way to compute attention in one fused step without storing the full attention matrix. Faster and uses less memory.
+**SIMD**: CPU instructions that do the same math on many numbers at once, such as AVX2 on x86 and NEON on Arm.
+**LLaMA-Factory**: An open-source tool that fine-tunes language models from one YAML file: SFT, DPO, KTO, LoRA, QLoRA, full fine-tuning, merging and serving. See [what LLaMA-Factory is](lesson:llamafactory/what-llama-factory-is).
+**LlamaBoard**: LLaMA-Factory's web form (`llamafactory-cli webui`). It writes a YAML and runs the same CLI.
+**Adapter**: The small set of extra weights LoRA trains. It is saved apart from the base model and can be merged into it.
+**Merge (adapter)**: Adding the adapter's weights into the base model, so you serve one normal model. Never merge onto a quantized base. See [merge and register](lesson:llamafactory/merge-register-and-version).
+**Chat template**: The exact text format a chat model was trained on, with markers for system, user and assistant. It can add a default system prompt you did not write. See [the anatomy of a config](lesson:llamafactory/anatomy-of-a-config).
+**Cutoff length**: The longest row, in tokens, before training cuts it.
+**Gradient accumulation**: Adding up the gradients of several small batches before one weight update, to get the effect of a bigger batch with the memory of a small one.
+**Effective batch size**: Rows behind each weight update: batch per device times accumulation steps times devices.
+**Warmup**: Starting the learning rate at zero and raising it over the first steps, so early updates are gentle.
+**KTO**: Preference training from single answers labelled good or bad, with no pairs needed.
+**Reward model**: A model trained to score answers, used by PPO-style training.
+**DeepSpeed ZeRO**: A way to split optimizer state, gradients and (at stage 3) weights across GPUs, so a model too big for one GPU can train. See [scaling up](lesson:llamafactory/qlora-full-and-scaling-up).
+**FSDP**: PyTorch's built-in way of splitting a model's weights across GPUs during training.
+**Base model revision**: The commit sha of a model on the Hugging Face Hub. The repo name alone is not a version, because new weights can be pushed under it.
+**Data digest**: A fingerprint of the training rows. The same bytes always give the same digest, so it works as the data's version.
+**Release gate**: An automatic check that stops a model from being promoted unless it passes a test. See [evaluate before you ship](lesson:llamafactory/evaluate-before-you-ship).
+**OpenAI-compatible API**: A server that accepts the same requests as OpenAI's `/v1/chat/completions`, so existing clients work with your own model.

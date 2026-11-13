@@ -434,7 +434,7 @@ Built as eight lessons: 1 what happens when you press enter, 2 batching and GPU 
 - LiveKit's own latency guidance, metrics definitions, and default endpointing delays. The pages read gave none.
 - Vapi "how it works" page (404). Vapi turn-taking and interruption settings.
 - LiveKit SIP trunk setup details, Silero VAD install steps, WebRTC demo tooling, any softphone guide.
-- The meaning of "M" in Q4_K_M. Hugging Face and the quantize README do not define it. The k-quants PR is the likely source but was not read.
+- The meaning of "M" in Q4_K_M: since resolved. The llama.cpp track read it in `src/llama-quant.cpp` (a size mix rule). See the llama.cpp quantization lesson.
 - Output throughput as a defined term. TTFT, ITL and TPOT are now sourced (vLLM benchmarking page). AIPerf was not looked up.
 - NVIDIA Dynamo: read from the GitHub docs tree (the parts the lessons use, not every page) on 2026-11-12. See the Dynamo notes for details and gaps.
 - Not run: vLLM, SGLang, TensorRT-LLM. No speed claim was tested. The vLLM paper abstract could not be re-read on 2026-11-12 (arxiv.org is blocked from our container). The default vLLM block size, the Triton Inference Server integration for TensorRT-LLM, the SGLang paper, and exactly which older TensorRT-LLM release dropped each engine-build feature were not checked. The SGLang docs page does not define `lpm`; the meaning comes from a source-code comment. The docs sites (docs.vllm.ai, docs.sglang.io, nvidia.github.io) time out from our container, so we read the same pages as source files on GitHub.
