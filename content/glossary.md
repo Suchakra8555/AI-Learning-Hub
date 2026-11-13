@@ -281,6 +281,26 @@ summary: Every hard word in the course, said simply. If a word is missing, add i
 **RoPE**: Rotary position embedding. Encodes a token's position by rotating its query and key vectors.
 **Flash attention**: A way to compute attention in one fused step without storing the full attention matrix. Faster and uses less memory.
 **SIMD**: CPU instructions that do the same math on many numbers at once, such as AVX2 on x86 and NEON on Arm.
+**Agent bridge**: In Dograh, a processor that connects the long-lived call worker to a child worker holding the LLM and TTS. See [how a call becomes a pipeline](lesson:pipecat/a-call-becomes-a-pipeline).
+**ARQ**: A Python job queue that uses Redis. Dograh runs post-call work, webhooks and campaign batches in it.
+**Aggregator (Pipecat)**: A processor that gathers frames into chat history. The user one also decides when a turn starts and stops. See [turns and context](lesson:pipecat/turns-vad-and-context).
+**Control frame**: A Pipecat frame that carries a signal such as the end of a reply. It is handled in order and dropped on interruption unless marked otherwise.
+**Data frame**: A Pipecat frame that carries content such as text or audio. It is handled in order and dropped on interruption.
+**Disposition**: A label for how a call went, such as "booked" or "no answer". Dograh extracts it after the call and maps it per organization.
+**Frame**: A small typed message that moves through a Pipecat pipeline. See [frames and processors](lesson:pipecat/frames-and-processors).
+**Frame processor**: The Pipecat object that receives frames, does one job and passes frames on.
+**Global node**: In Dograh, a node whose prompt is added to every other node that opts in. Used for the persona.
+**Observer (Pipecat)**: An object that sees every frame pushed in a pipeline but cannot change it. See [observers](lesson:pipecat/observers-metrics-and-tracing).
+**Pipecat**: An open-source Python framework for voice and multimodal agents, built on frames and processors. See [what Pipecat is](lesson:pipecat/what-pipecat-is).
+**Pipeline (Pipecat)**: An ordered list of processors. A pipeline is itself a processor, so pipelines nest.
+**Pre-call fetch**: In Dograh, an HTTP request made at the start of a call to load data about the caller.
+**Serializer**: A class that converts a carrier's wire messages into Pipecat frames and back.
+**Smart Turn**: A small model, shipped with Pipecat, that listens to audio and judges whether the speaker has finished a sentence.
+**System frame**: A Pipecat frame that skips the queue and is handled at once. Interruptions and microphone audio are system frames.
+**Tidy Up**: The Dograh builder button that arranges nodes automatically. The layout runs on the server using dagre.
+**Transport (Pipecat)**: The object that moves audio in and out of a pipeline, such as WebRTC or a websocket. See [transports](lesson:pipecat/transports-and-phone-audio).
+**Transition speech**: Text or audio Dograh plays just before moving to the next node, to cover the model's thinking time.
+**Workflow (Dograh)**: What Dograh's API calls an agent: a directed graph of nodes and edges, saved as versions.
 **LLaMA-Factory**: An open-source tool that fine-tunes language models from one YAML file: SFT, DPO, KTO, LoRA, QLoRA, full fine-tuning, merging and serving. See [what LLaMA-Factory is](lesson:llamafactory/what-llama-factory-is).
 **LlamaBoard**: LLaMA-Factory's web form (`llamafactory-cli webui`). It writes a YAML and runs the same CLI.
 **Adapter**: The small set of extra weights LoRA trains. It is saved apart from the base model and can be merged into it.
