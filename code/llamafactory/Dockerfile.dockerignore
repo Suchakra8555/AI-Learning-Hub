@@ -1,0 +1,11 @@
+# The build context is code/, which also holds .venv (gigabytes). Send only what the Dockerfile copies.
+*
+!llmops/training_data.py
+!llamafactory/make_dataset.py
+!llamafactory/train_tracked.py
+!llamafactory/evaluate.py
+!llamafactory/register.py
+!llamafactory/pipeline.py
+!llamafactory/configs
+!llamafactory/vendor/LlamaFactory
+llamafactory/vendor/LlamaFactory/.git

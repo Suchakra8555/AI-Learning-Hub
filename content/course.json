@@ -148,6 +148,12 @@
       "blurb": "What Kubeflow is in 2026 (and what is deprecated), a KFP pipeline run with no cluster, standalone Pipelines on kind and where it failed for us, Trainer, tuning, KServe and the two MLflow bridges. Five lessons, with honest notes on what was not run."
     },
     {
+      "id": "llamafactory",
+      "title": "Fine-tuning with LLaMA-Factory",
+      "status": "ready",
+      "blurb": "Fine-tune a model from one YAML file, then run the whole LLMOps loop around it with MLflow and Kubeflow: LLaMA-Factory's own examples on a CPU, your own data and its version, SFT, DPO, KTO and reward models, QLoRA and multi-GPU, a tracked run, an evaluation gate, merge and register, serving with traces, and a pipeline. Thirteen lessons; each says what ran on a laptop and what was only built."
+    },
+    {
       "id": "inference",
       "title": "Inference and edge",
       "status": "ready",

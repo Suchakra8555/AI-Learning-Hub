@@ -262,3 +262,20 @@ summary: Every hard word in the course, said simply. If a word is missing, add i
 **Flash attention**: A way to compute attention in one fused step without storing the full attention matrix. Faster and uses less memory.
 **Speculative decoding**: A small, fast draft model guesses several tokens and the big model checks them all at once. Same output, often faster.
 **SIMD**: CPU instructions that do the same math on many numbers at once, such as AVX2 on x86 and NEON on Arm.
+**LLaMA-Factory**: An open-source tool that fine-tunes language models from one YAML file: SFT, DPO, KTO, LoRA, QLoRA, full fine-tuning, merging and serving. See [what LLaMA-Factory is](lesson:llamafactory/what-llama-factory-is).
+**LlamaBoard**: LLaMA-Factory's web form (`llamafactory-cli webui`). It writes a YAML and runs the same CLI.
+**Adapter**: The small set of extra weights LoRA trains. It is saved apart from the base model and can be merged into it.
+**Merge (adapter)**: Adding the adapter's weights into the base model, so you serve one normal model. Never merge onto a quantized base. See [merge and register](lesson:llamafactory/merge-register-and-version).
+**Chat template**: The exact text format a chat model was trained on, with markers for system, user and assistant. It can add a default system prompt you did not write. See [the anatomy of a config](lesson:llamafactory/anatomy-of-a-config).
+**Cutoff length**: The longest row, in tokens, before training cuts it.
+**Gradient accumulation**: Adding up the gradients of several small batches before one weight update, to get the effect of a bigger batch with the memory of a small one.
+**Effective batch size**: Rows behind each weight update: batch per device times accumulation steps times devices.
+**Warmup**: Starting the learning rate at zero and raising it over the first steps, so early updates are gentle.
+**KTO**: Preference training from single answers labelled good or bad, with no pairs needed.
+**Reward model**: A model trained to score answers, used by PPO-style training.
+**DeepSpeed ZeRO**: A way to split optimizer state, gradients and (at stage 3) weights across GPUs, so a model too big for one GPU can train. See [scaling up](lesson:llamafactory/qlora-full-and-scaling-up).
+**FSDP**: PyTorch's built-in way of splitting a model's weights across GPUs during training.
+**Base model revision**: The commit sha of a model on the Hugging Face Hub. The repo name alone is not a version, because new weights can be pushed under it.
+**Data digest**: A fingerprint of the training rows. The same bytes always give the same digest, so it works as the data's version.
+**Release gate**: An automatic check that stops a model from being promoted unless it passes a test. See [evaluate before you ship](lesson:llamafactory/evaluate-before-you-ship).
+**OpenAI-compatible API**: A server that accepts the same requests as OpenAI's `/v1/chat/completions`, so existing clients work with your own model.

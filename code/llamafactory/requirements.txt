@@ -1,0 +1,5 @@
+# Versions the LLaMA-Factory track was run with (Python 3.11+; we used 3.12.4 on Windows 11, CPU only).
+# LLaMA-Factory itself comes from the v0.9.5 clone, so its examples/ match the code:
+#   git clone --depth 1 --branch v0.9.5 https://github.com/hiyouga/LlamaFactory.git vendor/LlamaFactory
+#   pip install -e vendor/LlamaFactory -r requirements.txt
+mlflow==3.18.0
